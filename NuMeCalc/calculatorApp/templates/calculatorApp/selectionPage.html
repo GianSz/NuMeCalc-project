@@ -1,12 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    Select
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+<h2 id="nonLinear"><i class="bi bi-x-square" style="margin-left: 1em;"></i> Solución numérica de ecuaciones no lineales</h2>
+<div style="display: grid; grid-template-columns: repeat(3,1fr); row-gap: 1em; margin: 1em;">
+    <div #id="biseccion" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="biseccion.html"><h5 class="card-title">Método de bisección</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="regla_falsa" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="regla_falsa.html"><h5 class="card-title">Método de regla falsa</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="punto_fijo" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="punto_fijo.html"><h5 class="card-title">Método de punto fijo</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="newton" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="newton.html"><h5 class="card-title">Método de Newton-Raphson</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="secante" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="secante.html"><h5 class="card-title">Método de secante</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="newton_multiples_1" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="newton_multiples_1.html"><h5 class="card-title">Método de Newton múltiples 1</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="newton_multiples_2" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="newton_multiples_2.html"><h5 class="card-title">Método de Newton múltiples 2</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+</div>
+
+<h2><i class="bi bi-dice-4" style="margin-left: 1em;"></i> Solución numérica de sistemas de ecuaciones</h2>
+<div style="display: grid; grid-template-columns: repeat(3,1fr); row-gap: 1em; margin: 1em;">
+    <div #id="gauss" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="gauss.html"><h5 class="card-title">Método de Gauss</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="factorizacion_LU" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de factorización LU</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
