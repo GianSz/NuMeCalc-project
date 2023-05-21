@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import selectionPage, calculatorPage
+from . import views
 
 app_name = 'calculatorApp'
 urlpatterns = [
-    path('', selectionPage, name='selectionPage'),
-    path('calculator', calculatorPage, name='calculatorPage'),
+    path('', views.selectionPage, name='selectionPage'),
+    path('calculator', views.calculatorPage, name='calculatorPage'),
+    path('biseccion/', views.biseccion, name='biseccion'),
 ]
