@@ -23,3 +23,16 @@ def biseccion(request):
     df = pd.read_csv('biseccion.csv')
     print(df)
     return render(request, 'calculatorApp/biseccion.html',context={})
+
+def secante(request):
+    #Arguments we need to do the function
+    x0 = 3.0   #Be careful to put all these data in float type!
+    x1 = 3.5
+    tol = 0.005
+    typeTol = 0
+    niter = 100.0 
+    fun = '(abs(x)^(x-1))-2.5*x-5' #read the function given
+    eng.secante(x0,x1,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+    df = pd.read_csv('secante.csv')
+    print(df)
+    return render(request, 'calculatorApp/secante.html',context={})
