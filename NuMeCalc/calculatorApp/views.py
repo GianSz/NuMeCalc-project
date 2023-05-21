@@ -18,8 +18,8 @@ def biseccion(request):
     tol = 0.005
     typeTol = 0
     niter = 100.0 
-    #fun = input() #read the function given
-    eng.Biseccion(xi,xs,tol,typeTol,niter) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+    fun = 'x^2-sin(x)*x-3' #read the function given
+    eng.Biseccion(xi,xs,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
     df = pd.read_csv('biseccion.csv')
     print(df)
-    render(request, 'calculatorApp/biseccion.html',context={})
+    return render(request, 'calculatorApp/biseccion.html',context={})

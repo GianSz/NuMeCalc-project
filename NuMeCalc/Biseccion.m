@@ -5,10 +5,9 @@
 %cifras significativas
 %El máximo número de iteraciones (niter) 
 
-function T = Biseccion(xi,xs,Tol,TypeTol,niter)
-    syms x
+function T = Biseccion(xi,xs,Tol,TypeTol,niter,fun)
 
-    f(x)=x^2-sin(x)*x-3;
+    f=evalin(symengine,fun);
     fi=eval(subs(f,xi));
     fs=eval(subs(f,xs));
     
@@ -88,10 +87,12 @@ function T = Biseccion(xi,xs,Tol,TypeTol,niter)
     end    
 
     T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
+        fig = figure;
         xplot=((xm-2):0.1:(xm+2));
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
+        print(fig,'graficaBi','-dpng')
         hold off
     writetable(T,'biseccion.csv')
     
