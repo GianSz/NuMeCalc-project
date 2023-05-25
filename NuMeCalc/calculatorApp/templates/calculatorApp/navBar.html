@@ -6,7 +6,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span><i class="bi bi-list fs-1"></i></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <div class="collapse navbar-collapse" style="flex-grow: 0;" id="navbarTogglerDemo01">
             <!-- inicio del menú -->
             <!-- Ecuaciones No Lineales -->
             <ul class="navbar-nav me-2 mb-2 mb-lg-0">
@@ -17,11 +17,11 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="biseccion.html">Método de bisección</a></li>
+                            <li><a class="dropdown-item" href="biseccion">Método de bisección</a></li>
                             <li><a class="dropdown-item" href="regla_falsa.html">Método de regla falsa</a></li>
                             <li><a class="dropdown-item" href="punto_fijo.html">Método de punto fijo</a></li>
-                            <li><a class="dropdown-item" href="newton.html">Método de Newton-Raphson</a></li>
-                            <li><a class="dropdown-item" href="secante.html">Método de secante</a></li>
+                            <li><a class="dropdown-item" href="newtonRaph">Método de Newton-Raphson</a></li>
+                            <li><a class="dropdown-item" href="secante">Método de secante</a></li>
                             <li><a class="dropdown-item" href="newton_multiples_1.html">Método de Newton múltiples 1</a></li>
                             <li><a class="dropdown-item" href="newton_multiples_2.html">Método de Newton múltiples 2</a></li>
                         </ul>
@@ -37,8 +37,25 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="gauss.html">Método de Gauss</a></li>
-                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de factorización LU</a></li>
+                            <li><a class="dropdown-item" href="gauss.html">Método de Gauss-Seidel</a></li>
+                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Jacobi</a></li>
+                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de SOR</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <!-- Interpolación -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Interpolación
+                        </a>
+                      
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="gauss.html">Método de Vandermonte</a></li>
+                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Newton</a></li>
+                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Lagrange</a></li>
                         </ul>
                     </div>
                 </li>

@@ -7,4 +7,7 @@ urlpatterns = [
     path('calculator', views.calculatorPage, name='calculatorPage'),
     path('biseccion/', views.biseccion, name='biseccion'),
     path('secante/', views.secante, name='secante'),
+    path('newtonRaph/', views.newtonRaph, name='newtonRaph'),
+    #capitulo 2
+    #capitulo 3
 ]

@@ -10,7 +10,7 @@
 
 {% block content %}
 <h2 id="nonLinear"><i class="bi bi-x-square" style="margin-left: 1em;"></i> Solución numérica de ecuaciones no lineales</h2>
-<div style="display: grid; grid-template-columns: repeat(3,1fr); row-gap: 1em; margin: 1em;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
     <div #id="biseccion" class="card" style="width: 18rem;">
         <div class="card-body text-center">
             <a class="nav-link active" href="biseccion"><h5 class="card-title">Método de bisección</h5></a>
@@ -37,7 +37,7 @@
     </div>
     <div #id="newton" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="newton.html"><h5 class="card-title">Método de Newton-Raphson</h5></a>
+            <a class="nav-link active" href="newtonRaph"><h5 class="card-title">Método de Newton-Raphson</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -70,18 +70,26 @@
 </div>
 
 <h2><i class="bi bi-dice-4" style="margin-left: 1em;"></i> Solución numérica de sistemas de ecuaciones</h2>
-<div style="display: grid; grid-template-columns: repeat(3,1fr); row-gap: 1em; margin: 1em;">
-    <div #id="gauss" class="card" style="width: 18rem;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
+    <div #id="gauss-seid" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="gauss.html"><h5 class="card-title">Método de Gauss</h5></a>
+            <a class="nav-link active" href="gauss.html"><h5 class="card-title">Método de Gauss-Seidel</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
         </div>
     </div>
-    <div #id="factorizacion_LU" class="card" style="width: 18rem;">
+    <div #id="jacobi" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de factorización LU</h5></a>
+            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de Jacobi</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="SOR" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de SOR</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -89,4 +97,31 @@
     </div>
 </div>
 
+<h2><i class="bi bi-graph-up" style="margin-left: 1em;"></i> Interpolación</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
+    <div #id="vander" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="gauss.html"><h5 class="card-title">Método de Vandermonte</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="newtonInt" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de Newton</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+    <div #id="lagrange" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="factorizacion_LU.html"><h5 class="card-title">Método de Lagrange</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--descripción--</p>
+        </div>
+    </div>
+</div>
 {% endblock %}

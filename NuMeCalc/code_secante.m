@@ -4,9 +4,10 @@
 % El tipo de tolerancia (TypeTol) -> 0 para decimales correctos y 1 para
 % cifras significativas
 % El màximo número de iteraciones (niter)
+% la función a trabajar (fun)
 %Devuelve una tabla con las iteraciones y una gráfica de la solución
 
-function T = secante(x0,x1,Tol,TypeTol,niter,fun)
+function T = code_secante(x0,x1,Tol,TypeTol,niter,fun)
 
         f=evalin(symengine,fun);
         %Inicializamos el contador
@@ -77,9 +78,9 @@ function T = secante(x0,x1,Tol,TypeTol,niter,fun)
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
-        print(fig,'graficaSec','-dpng')
+        print(fig,'grafica_secante','-dpng')
         hold off
         
-        writetable(T,'secante.csv')
+        writetable(T,'data_secante.csv')
         
 end
