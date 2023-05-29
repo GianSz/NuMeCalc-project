@@ -22,24 +22,71 @@
 </head>
 <body>
   <div class="container">
-    <h1>Points Input Form</h1>
-    <form id="pointsForm">
-      <div class="form-group">
-        <label for="xInput">X-coordinate:</label>
-        <input type="number" step="any" class="form-control point-input" id="xInput">
-      </div>
-      <div class="form-group">
-        <label for="yInput">Y-coordinate:</label>
-        <input type="number" step="any" class="form-control point-input" id="yInput">
-      </div>
-      <button type="submit" class="btn btn-primary">Add Point</button>
-    </form>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <h1>Points Input Form</h1>
+        <form id="pointsForm">
+          <div class="form-group">
+            <label for="xInput">X-coordinate:</label>
+            <input type="number" step="any" class="form-control point-input" id="xInput">
+          </div>
+          <div class="form-group">
+            <label for="yInput">Y-coordinate:</label>
+            <input type="number" step="any" class="form-control point-input" id="yInput">
+          </div>
+          <button type="submit" class="btn btn-primary">Add Point</button>
+        </form>
 
-    <h2>Points List</h2>
-    <ul id="pointsList"></ul>
+        <h2>Points List</h2>
+        <ul id="pointsList"></ul>
 
-    <button id="submitPointsBtn" class="btn btn-primary">Submit Points</button>
-  </div>
+        <button id="submitPointsBtn" class="btn btn-primary">Submit Points</button>
+        </div>
+
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="card" style="margin:2em;">
+          <h2 style="margin:0.5em;">Gráfica</h2>
+          <div class="card" style="height: 60%; width: 60%; margin:1em;">
+            <!--<img src="../../../grafica_biseccion.png">-->
+          </div>
+          <h2 style="margin:0.5em;">Tabla de polinomios</h2>
+          <div class="card" style="margin:1em;">
+            {% if title %}
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  {% for i in title %}
+                  <th scope="col">{{i}}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for info in tablaIter %}
+                <tr>
+                  {% for d in info %}
+                  <td>{{d}}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </div>
+          <h2 style="margin:0.5em;">Solución</h2>
+          <div class="card" style="margin:1em;">
+            {% if sol > 1 %}
+            <p style="margin-left:1em;">La solución obtenida es {{sol}}</p>
+            {% else %}
+            <p style="margin-left:1em;">{{sol}}</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      </body>
+      
+      </html>
 
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -90,7 +137,7 @@
     async function sendPointsToAPI(points) {
       // Replace the URL with your API endpoint
       try{
-        var apiUrl = 'http://localhost:8000/api/sendPoints';
+        var apiUrl = 'http://localhost:8000/splineCubico/';
         console.log(typeof points[0].x)
         points.sort(function(a, b) {
               return a.x - b.x;

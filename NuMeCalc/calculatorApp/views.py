@@ -241,11 +241,76 @@ def matJacobiSeidSor(request):
         'title':columnNames
     })
 
+@csrf_exempt
+def newton1(request):
+    if (request.method == 'POST'):
+        #Arguments we need to do the function
+        x0 = request.POST.get('x0')   #Be careful to put all these data in float type!
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        niter = request.POST.get('niter')
+        fun = request.POST.get('funcion') #read the function given
+        x0 = x0.strip().replace('−', '-')
+        eng.code_RaicesMultiples(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_RaicesMultiples.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        print(table)
+        if (columnNames[0] == 'Derivada de df(x0) es igual a 0, maximo o minimo local'):
+            sol = 'Derivada de df('+table[0][0]+') es igual a 0, x0 es un maximo o minimo local'
+        elif(columnNames[0] == 'MaximaRaiz'):
+            sol = 'Cantidad de derivadas en 0 ha pasado el límite definido: ' + table[0][0]
+        elif(columnNames[0] == 'Fracaso en iteraciones'):
+            sol = 'Fracaso en ' + table[0][0] + ' iteraciones'
+        else:
+            sol = "solución es: " + table[len(table)-1][1]+ " con "+table[len(table)-1][0] + " iteraciones"
+        return render(request, 'calculatorApp/newton1.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+    
+    return render(request,'calculatorApp/newton1.html',context={})
+
 # -----------------------------------------Capítulo 3--------------------------------------------------------
+@csrf_exempt
 def splineLineal(request):
     return render(request,'calculatorApp/splineLineal.html',context={})
+@csrf_exempt
 def splineCubico(request):
+    if(request.method == 'POST'):
+        data = json.loads(request.body)
+        x = json.loads(data['x'])
+        y = json.loads(data['y'])
+        d = json.loads(data['d'])
+        print("points: ")
+        print(x)
+        print(y)
+        print(d)
+        for i in range(len(x)):
+            x[i] = float(x[i])
+            y[i] = float(y[i])
+        response_data = {
+            'points': "received",
+        }
+        eng.Spline(x,y,d) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_Spline.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        sol = 1
+        print( columnNames)
+        print( table)
+        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
     return render(request,'calculatorApp/splineCubico.html',context={})
+
 
 @csrf_exempt
 def sendPoints(request):
@@ -258,14 +323,25 @@ def sendPoints(request):
         print(x)
         print(y)
         print(d)
-
+        for i in range(len(x)):
+            x[i] = float(x[i])
+            y[i] = float(y[i])
         response_data = {
             'points': "received",
         }
         eng.Spline(x,y,d) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        df = pd.read_csv('data_Spline.csv')
-        print(df)
-        return  JsonResponse(response_data,safe = False)
+        csv_file = open('data_Spline.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        sol = 1
+        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+        # return  JsonResponse(response_data,safe = False)
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
@@ -318,3 +394,4 @@ def newtonInter(request):
     
     else:
         return render(request, 'calculatorApp/newtonInter.html',context={})
+    

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en ">
+
+<head>
+    <meta charset="utf-8 ">
+    <meta name="viewport " content="width=device-width, initial-scale=1 ">
+    <title> Secante </title>
+    <!-- bootstrap -->
+    <link rel="stylesheet " href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css " />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css " rel="stylesheet "
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC " crossorigin="anonymous ">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js "
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3 "
+        crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js "
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V "
+        crossorigin="anonymous "></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-light ">
+        <div class="container-fluid "> <!-- home --> <a class="navbar-brand mb-1 " href="/ ">AN-Calc</a>
+            <!-- botón por si la pantalla es muy pequeña -->
+            <button class="navbar-toggler " type="button " data-bs-toggle="collapse "
+                data-bs-target="#navbarTogglerDemo01 " aria-controls="navbarTogglerDemo01 " aria-expanded="false "
+                aria-label="Toggle navigation "> <span><i class="bi bi-list fs-1 "></i></span> </button>
+            <div class="collapse navbar-collapse " style="flex-grow: 0; " id="navbarTogglerDemo01 ">
+                <!-- inicio del menú --> <!-- Ecuaciones No Lineales -->
+                <ul class="navbar-nav me-2 mb-2 mb-lg-0 ">
+                    <li class="nav-item ">
+                        <div class="dropdown "> <a class="nav-link dropdown-toggle " href="# " role="button "
+                                data-bs-toggle="dropdown " aria-expanded="false ">
+                                Ecuaciones NL </a>
+                            <ul class="dropdown-menu ">
+                                <li><a class="dropdown-item " href="/biseccion/biseccion ">Método de bisección</a>
+                                </li>
+                                <li><a class="dropdown-item " href="regla_falsa.html ">Método de regla falsa</a></li>
+                                <li><a class="dropdown-item " href="punto_fijo.html ">Método de punto fijo</a></li>
+                                <li><a class="dropdown-item " href="/newtonRaph/newtonRaph ">Método de
+                                        Newton-Raphson</a></li>
+                                <li><a class="dropdown-item " href="/secante/secante ">Método de secante</a></li>
+                                <li><a class="dropdown-item " href="newton_multiples_1.html ">Método de Newton
+                                        múltiples 1</a></li>
+                                <li><a class="dropdown-item " href="newton_multiples_2.html ">Método de Newton
+                                        múltiples 2</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul> <!-- Sistemas de Ecuaciones -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item ">
+                        <div class="dropdown "> <a class="nav-link dropdown-toggle " href="# " role="button "
+                                data-bs-toggle="dropdown " aria-expanded="false "> Sistemas de Ecuaciones </a>
+                            <ul class="dropdown-menu ">
+                                <li><a class="dropdown-item " href="/goMatrix/0/ ">Método
+                                        de Jacobi</a></li>
+                                <li><a class="dropdown-item " href="/goMatrix/1/ ">Método
+                                        de Gauss-Seidel</a></li>
+                                <li><a class="dropdown-item " href="/goMatrix/2/ ">Método de SOR</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- Interpolación -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item ">
+                        <div class="dropdown "> <a class="nav-link dropdown-toggle " href="# " role="button "
+                                data-bs-toggle="dropdown " aria-expanded="false "> Interpolación </a>
+                            <ul class="dropdown-menu ">
+                                <li><a class="dropdown-item " href="gauss.html ">Método de
+                                        Vandermonte</a></li>
+                                <li><a class="dropdown-item " href="/newtonInter/ ">Método de Newton</a></li>
+                                <li><a class="dropdown-item " href="/splineLineal/ ">Spline Lineal</a></li>
+                                <li><a class="dropdown-item " href="/splineCubico/ ">Spline Cúbico</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <title>Spline Cúbico</title>
+        <link rel="stylesheet " href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css ">
+        <style>
+            .point-input {
+                width: 100px;
+                /* Adjust the width as needed */
+
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container ">
+            <div class="row ">
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <h1>Points
+                        Input Form</h1>
+                    <form id="pointsForm ">
+                        <div class="form-group "> <label for="xInput ">X-coordinate:</label> <input type="number "
+                                step="any " class="form-control point-input " id="xInput "> </div>
+                        <div class="form-group ">
+                            <label for="yInput ">Y-coordinate:</label> <input type="number " step="any "
+                                class="form-control point-input " id="yInput ">
+                        </div> <button type="submit " class="btn btn-primary ">Add Point</button>
+                    </form>
+                    <h2>Points List</h2>
+                    <ul id="pointsList "></ul> <button id="submitPointsBtn " class="btn btn-primary ">Submit
+                        Points</button>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <div class="card " style="margin:2em; ">
+                        <h2 style="margin:0.5em; ">Gráfica</h2>
+                        <div class="card " style="height: 60%; width: 60%; margin:1em; ">
+                            <!--<img src= "../../../grafica_biseccion.png ">-->
+                        </div>
+                        <h2 style="margin:0.5em; ">
+                            Tabla de iteraciones</h2>
+                        <div class="card " style="margin:1em; ">
+                            <table class="table table-bordered text-center ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col ">
+                                            polinomio</th>
+                                        <th scope="col ">a</th>
+                                        <th scope="col ">b</th>
+                                        <th scope="col ">c</th>
+                                        <th scope="col ">d</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>-0.5</td>
+                                        <td>1.5</td>
+                                        <td>
+                                            -5.10702591327572e-15</td>
+                                        <td>4.44089209850063e-15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>0.5</td>
+                                        <td>-4.5</td>
+                                        <td>12</td>
+                                        <td>-8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h2 style="margin:0.5em; ">Solución
+                        </h2>
+                        <div class="card " style="margin:1em; ">
+                            <p style="margin-left:1em; ">1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    </html>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js "></script>
+    <script>     $(document).ready(function () {
+            $('#pointsForm').submit(function (event) {
+                event.preventDefault(); // Prevent the form from submitting normally       
+                var x = $('#xInput').val(); var y = $('#yInput').val(); addPointToList(x, y); $('#xInput').val(''); $('#yInput').val('');
+            }); $('#submitPointsBtn').click(async function () { try { var points = await getPointsList(); if (points.length > 0) { sendPointsToAPI(points); } else { alert('Please add some points before submitting.'); } } catch (e) { console.log(e); } });
+        }); function addPointToList(x, y) { var pointItem = $('<li>').text('(' + x + ', ' + y + ')'); $('#pointsList').append(pointItem); } function getPointsList() { var points = []; $('#pointsList li').each(function () { var pointText = $(this).text(); var coordinates = pointText.substring(1, pointText.length - 1).split(', '); var x = parseFloat(coordinates[0]); var y = parseFloat(coordinates[1]); points.push({ x: x, y: y }); }); return points; } async function sendPointsToAPI(points) {        // Replace the URL with your API endpoint       try{         var apiUrl = 'http://localhost:8000/splineCubico/';         console.log(typeof points[0].x)         points.sort(function(a, b) {               return a.x - b.x;         });         let x = [],y = [];         for(let i of points){           x.push(i.x),y.push(i.y);           // console.log(i.x)           // console.log(i.y)           // console.log(i);         }         console.log(x)         console.log(y)         console.log(points)         const response  = await axios.post(apiUrl, {           x:JSON.stringify(x),           y: JSON.stringify(y),           d: JSON.stringify(3),         })         alert('Points submitted successfully.');         console.log(response);        }catch(e){         console.log(e);       }     }  
+    </script>
+
+</body>
+
+</html>
+<footer class="bg-light text-center">
+    <div class="container p-4 ">
+        <div class="col-lg-6 col-md-12 mb-4 mb-md-0 text-center ">
+            <h5 class="text-uppercase ">NuMeCalc</h5>
+            <p>This web application
+                has different numeric methods that allows to find approximated solutions for ecuations, system of
+                equations</p>
+        </div>
+    </div>
+    <div class="text-center p-3 " style="background-color: rgba(0, 0, 0, 0.2); "> © 2023 NuMeCalc </div>
+</footer>
+</body>
+
+</html>

@@ -5,6 +5,7 @@ function [Tabla] = Spline(x,y,d)
     n=length(x);
     A=zeros((d+1)*(n-1));
     b=zeros((d+1)*(n-1),1);
+    
     x = cell2mat(x);
     y= cell2mat(y);
     x = double(x);

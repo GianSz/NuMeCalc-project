@@ -18,4 +18,5 @@ urlpatterns = [
     path('splineLineal/',views.splineLineal, name = 'splineLineal'),
     path('splineCubico/',views.splineCubico, name = 'splineCubico'),
     path('api/sendPoints', views.sendPoints, name='sendPoints'),
+    path('newton1/', views.newton1, name='newton1'),
 ]
