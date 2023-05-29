@@ -1,7 +1,7 @@
 {% extends 'calculatorApp/base.html' %}
 
 {% block title %}
-    Biseccion
+    Newton Raphson
 {% endblock %}
 
 {% block navbar %}
@@ -10,14 +10,15 @@
 
 {% block content %}
 
-<h2 style="color:blue; margin:1em;">MÉTODO BISECCIÓN</h2>
+<h2 style="color:blue; margin:1em;">MÉTODO NEWTON RAPHSON</h2>
 <p style="margin-left: 2em;">Este método sirve para hallar la solución, o una aproximación de esta, para ecuaciones no lineales.</p>
-<p style="margin-left: 2em;">Antes de correr este código recuerde que debe tener en cuenta que debe ingresar un intervalo y que la solución a la ecuación debe estar dentro de este, de lo contrario el método no encontrará una solución.</p>
+<p style="margin-left: 2em;">Antes de correr este código recuerde que la derivada de la x0 no puede ser 0, de lo contrario el método no encontrará una solución. 
+    Además el método no debe calcularse cerca de mínimos o máximos locales puesto que esto no permitirá converger el método.</p>
 
 <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="card" style="margin: 2em;">
-            <form  action="{% url 'calculatorApp:biseccion' %}" method="post" style="margin: 2em;">
+            <form  action="{% url 'calculatorApp:newtonRaph' %}" method="post" style="margin: 2em;">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="funcion" class="form-label">Función a graficar</label>
@@ -29,12 +30,8 @@
                     <div id="info" class="form-text">   - Para poner valor absoluto usar abs()</div>
                 </div>
                 <div class="mb-3">
-                    <label for="inicioInt" class="form-label">Inicio del intervalo</label>
-                    <input type="text" class="form-control" id="inicioInt" name="inicioInt" required>
-                </div>
-                <div class="mb-3">
-                    <label for="finInt" class="form-label">Fin del intervalo</label>
-                    <input type="text" class="form-control" id="finInt" name="finInt" required>
+                    <label for="x0" class="form-label">Valor inicial</label>
+                    <input type="text" class="form-control" id="x0" name="x0" required>
                 </div>
                 <div class="mb-3">
                     <label for="tolerancia" class="form-label">Tolerancia</label>
@@ -89,10 +86,8 @@
             </div>
             <h2 style="margin:0.5em;">Solución</h2>
             <div class="card" style="margin:1em;">
-                {% if sol > 1 %}
+                {% if sol %}
                     <p style="margin-left:1em;">La solución obtenida es {{sol}}</p>
-                {% else %}
-                    <p style="margin-left:1em;">{{sol}}</p>
                 {% endif %}
             </div>
         </div>

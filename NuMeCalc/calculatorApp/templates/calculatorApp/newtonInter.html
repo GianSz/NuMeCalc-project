@@ -1,0 +1,59 @@
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    Newton Interpolante
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+<h2 style="color:blue; margin:1em;">MÉTODO NEWTON INTERPOLANTE</h2>
+<p style="margin-left: 2em;">Este método sirve para hallar la aproximación a un polinomio que pasa a través de los puntos dados.</p>
+<p style="margin-left: 2em;">Antes de correr este código recuerde que debe tener en cuenta que debe ingresar un conjunto de puntos en orden ascendente.</p>
+<p style="margin-left: 2em;">el conjunto de coordenadas <strong>x</strong> y <strong>y</strong> debe ir separado por comas, por ejemplo:"1,2,3,4" (sin incluir las comillas)</p>
+
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="card" style="margin: 2em;">
+            <form  action="{% url 'calculatorApp:newtonInter' %}" method="post" style="margin: 2em;">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="funcion" class="form-label">Conjunto de x</label>
+                    <input type="text" class="form-control" name="x" aria-describedby="info" required>
+                </div>
+                <div class="mb-3">
+                    <label for="inicioInt" class="form-label">Conjunto de y</label>
+                    <input type="text" class="form-control" name="y" required>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Calcular</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="card" style="margin:2em;">
+            <h2 style="margin:0.5em;">Gráfica</h2>
+            <div class="card" style="height: 60%; width: 60%; margin:1em;">
+                <!--<img src="../../../grafica_biseccion.png">-->
+            </div>
+            <h2 style="margin:0.5em;">Polinomio</h2>
+            <div class="card" style="margin:1em;">
+                {% if pol %}
+                    <p>
+                        {% for p in pol %}
+                            {% if p == pol|last %}
+                                ({{p.0}})X<sup> {{p.1}}</sup>
+                            {%else%}
+                                ({{p.0}})X<sup> {{p.1}}</sup>+
+                            {%endif%}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
