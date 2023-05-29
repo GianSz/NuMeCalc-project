@@ -8,9 +8,6 @@ eng = matlab.engine.start_matlab() #opens matlab
 # Create your views here.
 def selectionPage(request):
     return render(request, 'calculatorApp/selectionPage.html', context={})
-
-def calculatorPage(request):
-    return render(request, 'calculatorApp/calculatorPage.html', context={})
 # -----------------------------------------Capítulo 1--------------------------------------------------------
 
 def biseccion(request):
@@ -31,6 +28,22 @@ def biseccion(request):
         df = pd.read_csv('data_biseccion.csv')
         print(df)
     return render(request, 'calculatorApp/biseccion.html',context={})
+
+def puntoFijo(request):
+    #Arguments we need to do the function
+    
+    x0 = 0
+    tol = 0.005
+    typeTol = 0
+    # tipos:
+    # - 0 -> dc
+    # - 1 -> cs
+    niter = 100.0
+    fun = '2*(exp(1)^(x^2))-5*x'
+    funG = '(2*(exp(1)^(x^2)))/5'
+    T = eng.code_puntoFijo(x0, tol, typeTol, niter, fun, funG)
+    
+    return render(request, 'calculatorApp/puntoFijo.html', context={})
 
 def secante(request):
     #Arguments we need to do the function

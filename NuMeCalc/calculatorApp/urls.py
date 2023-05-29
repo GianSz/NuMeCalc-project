@@ -4,8 +4,8 @@ from . import views
 app_name = 'calculatorApp'
 urlpatterns = [
     path('', views.selectionPage, name='selectionPage'),
-    path('calculator', views.calculatorPage, name='calculatorPage'),
     path('biseccion/', views.biseccion, name='biseccion'),
+    path('puntoFijo/', views.puntoFijo, name='puntoFijo'),
     path('secante/', views.secante, name='secante'),
     path('newtonRaph/', views.newtonRaph, name='newtonRaph'),
     #capitulo 2

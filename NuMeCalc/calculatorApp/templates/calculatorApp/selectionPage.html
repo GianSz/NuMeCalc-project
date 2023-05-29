@@ -1,11 +1,7 @@
-{% extends 'calculatorApp/base.html' %}
+{% extends 'calculatorApp/bases/base.html' %}
 
 {% block title %}
     Select
-{% endblock %}
-
-{% block navbar %}
-    {% include 'calculatorApp/navBar.html' %} 
 {% endblock %}
 
 {% block content %}
@@ -29,7 +25,7 @@
     </div>
     <div #id="punto_fijo" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="punto_fijo.html"><h5 class="card-title">Método de punto fijo</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:puntoFijo' %}"><h5 class="card-title">Método de punto fijo</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
