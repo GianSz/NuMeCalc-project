@@ -1,0 +1,55 @@
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    {{method}}
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+
+<h2 style="margin:0.5em;">Solución</h2>
+<div style="display: flex;flex-direction: column;margin: 2em;">
+    {% if ans|length > 1 %}
+        {% for i in ans %}
+            <p>X <sub>{{forloop.counter}}</sub>={{i}}</p>
+        {%endfor%}
+    {%else%}
+        <p>{{ans.0}}</p>
+        <p>Favor verifique lo siguiente:</p>
+        <ul>
+            <li>En sor, si 0<=w<=1 se usa para sistemas que no convergen con Gauss-Seidel</li>
+            <li>En sor, si 1<=w<=2 se usa para sistemas que no convergen con Gauss-Seidel</li>
+            <li>revise que el determinante sea diferente de 0</li>
+            <li>revise que la matriz no tenga 0s en su diagonal</li>
+            <li>puede revisar en matlab el radio espectral de la matriz de transción con el código <code>max(abs(eig(T)))</code></li>
+        </ul>
+    {%endif%}
+</div>
+<h2 style="margin:0.5em;">Tabla de iteraciones</h2>
+<div class="card" style="margin:1em;">
+    {% if title %}
+        <table class=" table table-bordered text-center">
+            <thead>
+                <tr>
+                    {% for i in title %}
+                        <th scope="col">{{i.0}}<sub>{{i.1}}</sub></th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for info in tablaIter %}
+                    <tr>
+                        {% for d in info %}
+                        <td>{{d}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+
+{% endblock %}

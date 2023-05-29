@@ -66,8 +66,6 @@ def newtonRaph(request):
 
 # -----------------------------------------Capítulo 2--------------------------------------------------------
 
-def sor(request):
-    return render(request,'calculatorApp/sor.html',context={})
 def goMatrix(request,method):
     if(method==0):
         return render(request,'calculatorApp/cap2-selNxN.html',context={'method':'jacobi'})
@@ -139,15 +137,48 @@ def matJacobiSeidSor(request):
     # - 1 -> cs
     niter = int(request.POST.get('niter'))
     met=int(request.POST.get('method'))
+    if(met==0):
+        method='jacobi'
+    elif(met==1):
+        method='gaussSeid'
+    elif(met==2):
+        method='sor'
+    else:
+        messages.error(request,"Estas ingresando incorrectamente a un metodo matricial")
+        return redirect('selectionPage')
     # métodos:
     # - 0 -> jacobi
     # - 1 -> gauss-seidel
     # - 2 -> SOR
     w=0.5
     eng.code_MatJacobiSeidSor(tol,typeTol,niter,met,w) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-    df = pd.read_csv('data_iterativos.csv')
-    print(df)
-    return render(request, 'calculatorApp/biseccion.html',context={})
+    #leemos el csv
+    csv_file = open('data_iterativos.csv', 'r')
+    data = csv_file.readlines()
+    columnNames = [("n",""),("Error","")]
+    for i in range(1,n+1):
+        columnNames.append(("X",str(i)))
+    table = []
+    #creamos tabla
+    for i in range(1, len(data)):
+        row = data[i].split(',')
+        row[len(row)-1] = row[len(row)-1].replace('\n','')
+        table.append(row)
+    #creamos solución
+    ans=[]
+    if(float(table[len(table)-1][1])<=tol):
+        for i in table[len(table)-1][2:]:
+            ans.append(i)
+    else:
+        ans.append("No logró converger el método")
+    print(ans)
+    return render(request, 'calculatorApp/cap2-showAns.html',context={
+        'n':n,
+        'ans':ans,
+        'method':method,
+        'tablaIter':table,
+        'title':columnNames
+    })
 
 # -----------------------------------------Capítulo 3--------------------------------------------------------
 def splineLineal(request):

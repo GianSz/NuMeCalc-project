@@ -42,6 +42,15 @@
         </div>
 
         <div style="display: flex; justify-content: center; flex-direction: column; margin: 2em; gap: 1em;">
+        <p>{{ans.0}}</p>
+        <p>Favor verifique lo siguiente:</p>
+        <ul>
+            <li>En sor, si 0<=w<=1 se usa para sistemas que no convergen con Gauss-Seidel</li>
+            <li>En sor, si 1<=w<=2 se usa para sistemas que no convergen con Gauss-Seidel</li>
+            <li>revise que el determinante sea diferente de 0</li>
+            <li>revise que la matriz no tenga 0s en su diagonal</li>
+            <li>puede revisar en matlab el radio espectral de la matriz de transción con el código <code>max(abs(eig(T)))</code></li>
+        </ul>
         {%if method == 'sor' %}
         <label for="w"> Parametro w</label>
         <input class="form-control" type="number" step="0.000000000000001" id="w" name="w" required>
@@ -51,7 +60,7 @@
             <label for="tol"> Tolerancia</label>
             <input class="form-control" type="number" step="0.000000000000001" name="tol" required>
             <label for="typeTol"> Tipo de tolerancia</label>
-            <select class="form-select" id="typeTire" name="typeTol" required>
+            <select class="form-select" id="typeTol" name="typeTol" required>
                 <option selected></option>
                 <option value="0">Decimales correctos</option>
                 <option value="1">Cifras significativas</option>
