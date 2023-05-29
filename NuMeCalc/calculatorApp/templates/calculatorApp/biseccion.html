@@ -12,31 +12,32 @@
 <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="card" style="margin: 2em;">
-            <form style="margin: 2em;">
+            <form  action="{% url 'calculatorApp:biseccion' %}" method="post" style="margin: 2em;">
+                {% csrf_token %}
                 <div class="mb-3">
                     <label for="funcion" class="form-label">Función a graficar</label>
-                    <input type="text" class="form-control" id="funcion" required>
+                    <input type="text" class="form-control" id="funcion" name="funcion" required>
                 </div>
                 <div class="mb-3">
                     <label for="inicioInt" class="form-label">Inicio del intervalo</label>
-                    <input type="number" class="form-control" id="inicioInt" required>
+                    <input type="number" class="form-control" id="inicioInt" name="inicioInt" required>
                 </div>
                 <div class="mb-3">
                     <label for="finInt" class="form-label">Fin del intervalo</label>
-                    <input type="number" class="form-control" id="finInt" required>
+                    <input type="number" class="form-control" id="finInt" name="finInt" required>
                 </div>
                 <div class="mb-3">
                     <label for="tolerancia" class="form-label">Tolerancia</label>
-                    <input type="text" class="form-control" id="tolerancia" required>
+                    <input type="text" class="form-control" id="tolerancia" name="tolerancia" required>
                 </div>
                 <div class="mb-3">
                     <label for="tipoError" class="form-label">Tipo de error</label>
-                    <input type="number" class="form-control" id="tipoError" aria-describedby="info" required>
+                    <input type="number" class="form-control" id="tipoError" name="tipoError" aria-describedby="info" required>
                     <div id="info" class="form-text">Recuerde que 0 es para decimales correctos y 1 para cifras significativas</div>
                 </div>
                 <div class="mb-3">
                     <label for="niter" class="form-label">Cantidad máxima de iteraciones</label>
-                    <input type="number" class="form-control" id="niter" required>
+                    <input type="number" class="form-control" id="niter" name="niter" required>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Submit</button>

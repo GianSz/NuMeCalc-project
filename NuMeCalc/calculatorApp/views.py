@@ -34,24 +34,33 @@ def biseccion(request):
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
         
-        return render(request, 'biseccion.html',context={'tablaIter':table,'title':columnNames})
+        return render(request, 'calculatorApp/biseccion.html',context={'tablaIter':table,'title':columnNames})
     
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 def secante(request):
-    #Arguments we need to do the function
-    x0 = 3.0   #Be careful to put all these data in float type!
-    x1 = 3.5
-    tol = 0.005
-    typeTol = 0
-    # tipos:
-    # - 0 -> dc
-    # - 1 -> cs
-    niter = 100.0 
-    fun = '(x^3+5)-2' #read the function given
-    eng.code_secante(x0,x1,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-    df = pd.read_csv('data_secante.csv')
-    print(df)
+    if(request.method == 'POST'):
+        #Arguments we need to do the function
+        x0 = request.POST.get('x0')   #Be careful to put all these data in float type!
+        x1 = request.POST.get('x1')
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        # tipos:
+        # - 0 -> dc
+        # - 1 -> cs
+        niter = request.POST.get('niter') 
+        fun = request.POST.get('funcion') #read the function given
+        eng.code_secante(float(x0),float(x1),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_secante.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        return render(request, 'calculatorApp/secante.html',context={'tablaIter':table,'title':columnNames})
     return render(request, 'calculatorApp/secante.html',context={})
 
 def newtonRaph(request):
