@@ -22,7 +22,6 @@ def biseccion(request):
         typeTol = request.POST.get('tipoError')
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
-        print("llegue")
         eng.code_biseccion(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
         csv_file = open('data_biseccion.csv', 'r')
         data = csv_file.readlines()
@@ -33,8 +32,11 @@ def biseccion(request):
             row = data[i].split(',')
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
-        
-        return render(request, 'calculatorApp/biseccion.html',context={'tablaIter':table,'title':columnNames})
+        if(float(table[len(table)-1][3])<= float(tol)):
+            sol = table[len(table)-1][1]
+        else:
+            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
+        return render(request, 'calculatorApp/biseccion.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
     
     return render(request, 'calculatorApp/biseccion.html',context={})
 
@@ -45,9 +47,6 @@ def secante(request):
         x1 = request.POST.get('x1')
         tol = request.POST.get('tolerancia')
         typeTol = request.POST.get('tipoError')
-        # tipos:
-        # - 0 -> dc
-        # - 1 -> cs
         niter = request.POST.get('niter') 
         fun = request.POST.get('funcion') #read the function given
         eng.code_secante(float(x0),float(x1),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
@@ -60,23 +59,40 @@ def secante(request):
             row = data[i].split(',')
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
-        return render(request, 'calculatorApp/secante.html',context={'tablaIter':table,'title':columnNames})
+        if(float(table[len(table)-1][3])<= float(tol)):
+            sol = table[len(table)-1][1]
+        else:
+            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
+        return render(request, 'calculatorApp/secante.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
     return render(request, 'calculatorApp/secante.html',context={})
 
 def newtonRaph(request):
-    #Arguments we need to do the function
-    x0 = 3.0   #Be careful to put all these data in float type!
-    tol = 0.005
-    typeTol = 0
-    # tipos:
-    # - 0 -> dc
-    # - 1 -> cs
-    niter = 100.0 
-    fun = '(x^3+5)-2' #read the function given
-    eng.code_newtonRaph(x0,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-    df = pd.read_csv('data_newtonRaph.csv')
-    print(df)
-    return render(request, 'calculatorApp/secante.html',context={})
+    if (request.method == 'POST'):
+        #Arguments we need to do the function
+        x0 = request.POST.get('x0')   #Be careful to put all these data in float type!
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        niter = request.POST.get('niter')
+        fun = request.POST.get('funcion') #read the function given
+        eng.code_newtonRaph(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_newtonRaph.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+            
+        if(float(table[len(table)-1][3])<= float(tol)):
+            sol = table[len(table)-1][1]
+        else:
+            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
+
+        return render(request, 'calculatorApp/newtonRaph.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+    
+    return render(request, 'calculatorApp/newtonRaph.html',context={})
 
 # -----------------------------------------Capítulo 2--------------------------------------------------------
 
