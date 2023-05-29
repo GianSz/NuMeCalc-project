@@ -14,15 +14,18 @@ def calculatorPage(request):
 
 def biseccion(request):
     #Arguments we need to do the function
-    xi = 2.0   #Be careful to put all these data in float type!
-    xs = 3.0
+    xi = -1.0   #Be careful to put all these data in float type!
+    xs = 1.0
     tol = 0.005
     typeTol = 0
     niter = 100.0 
-    fun = '(x^3+5)-2' #read the function given
-    eng.code_biseccion(xi,xs,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-    df = pd.read_csv('data_biseccion.csv')
-    print(df)
+    fun = '(x^2)-1' #read the function given
+    T = eng.code_biseccion(xi,xs,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+    if(T == 'El intervalo es inadecuado' or ('es raiz de f(x)' in T)):
+        print(T)
+    else:
+        df = pd.read_csv('data_biseccion.csv')
+        print(df)
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 def secante(request):
