@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.selectionPage, name='selectionPage'),
     path('calculator', views.calculatorPage, name='calculatorPage'),
     path('biseccion/', views.biseccion, name='biseccion'),
+    path('reglaFalsa/',views.reglaFalsa,name='reglaFalsa'),
     path('secante/', views.secante, name='secante'),
     path('newtonRaph/', views.newtonRaph, name='newtonRaph'),
     #capitulo 2

@@ -33,6 +33,9 @@ def biseccion(request):
         print(df)
     return render(request, 'calculatorApp/biseccion.html',context={})
 
+def reglaFalsa(request):
+    return render(request,'calculatorApp/reglaFalsa.html',context={})
+
 def secante(request):
     #Arguments we need to do the function
     x0 = 3.0   #Be careful to put all these data in float type!
