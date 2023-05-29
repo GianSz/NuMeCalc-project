@@ -1,7 +1,7 @@
 {% extends 'calculatorApp/base.html' %}
 
 {% block title %}
-    Secante
+    Newton Interpolante
 {% endblock %}
 
 {% block navbar %}
@@ -9,163 +9,65 @@
 {% endblock %}
 
 {% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Spline Cúbico</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <style>
-    .point-input {
-      width: 100px; /* Adjust the width as needed */
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-sm-6 col-xs-12">
-        <h1>Points Input Form</h1>
-        <form id="pointsForm">
-          <div class="form-group">
-            <label for="xInput">X-coordinate:</label>
-            <input type="number" step="any" class="form-control point-input" id="xInput">
-          </div>
-          <div class="form-group">
-            <label for="yInput">Y-coordinate:</label>
-            <input type="number" step="any" class="form-control point-input" id="yInput">
-          </div>
-          <button type="submit" class="btn btn-primary">Add Point</button>
-        </form>
+<h2 style="color:blue; margin:1em;">MÉTODO NEWTON INTERPOLANTE</h2>
+<p style="margin-left: 2em;">Este método sirve para hallar la aproximación a un polinomio que pasa a través de los
+  puntos dados.</p>
+<p style="margin-left: 2em;">Antes de correr este código recuerde que debe tener en cuenta que debe ingresar un conjunto
+  de puntos en orden ascendente.</p>
+<p style="margin-left: 2em;">el conjunto de coordenadas <strong>x</strong> y <strong>y</strong> debe ir separado por
+  comas, por ejemplo:"1,2,3,4" (sin incluir las comillas)</p>
 
-        <h2>Points List</h2>
-        <ul id="pointsList"></ul>
-
-        <button id="submitPointsBtn" class="btn btn-primary">Submit Points</button>
+<div class="row">
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="card" style="margin: 2em;">
+      <form action="{% url 'calculatorApp:splineCubico' %}" method="post" style="margin: 2em;">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="funcion" class="form-label">Conjunto de x</label>
+          <input type="text" class="form-control" name="x" aria-describedby="info" required>
         </div>
-
-      <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="card" style="margin:2em;">
-          <h2 style="margin:0.5em;">Gráfica</h2>
-          <div class="card" style="height: 60%; width: 60%; margin:1em;">
-            <!--<img src="../../../grafica_biseccion.png">-->
-          </div>
-          <h2 style="margin:0.5em;">Tabla de polinomios</h2>
-          <div class="card" style="margin:1em;">
-            {% if title %}
-            <table class="table table-bordered text-center">
-              <thead>
-                <tr>
-                  {% for i in title %}
-                  <th scope="col">{{i}}</th>
+                <div class="mb-3">
+                  <label for="inicioInt" class="form-label">Conjunto de y</label>
+                  <input type="text" class="form-control" name="y" required>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Calcular</button>
+                </div>
+                </form>
+        </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="card" style="margin:2em;">
+            <h2 style="margin:0.5em;">Gráfica</h2>
+            <div class="card" style="height: 60%; width: 60%; margin:1em;">
+              <!--<img src="../../../grafica_biseccion.png">-->
+            </div>
+            <h2 style="margin:0.5em;">Polinomio</h2>
+            <p style="margin-left: 2em;">Los polinomios se mostrarán de la siguiente manera: a*x <sup> 3 </sup> +
+              b*x<sup>2</sup> + c*x + d</p>
+            <div class="card" style="margin:1em;">
+              {% if title %}
+              <table class=" table table-bordered text-center">
+                <thead>
+                  <tr>
+                    {% for i in title %}
+                    <th scope="col">{{i}}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for info in tablaIter %}
+                  <tr>
+                    {% for d in info %}
+                    <td>{{d}}</td>
+                    {% endfor %}
+                  </tr>
                   {% endfor %}
-                </tr>
-              </thead>
-              <tbody>
-                {% for info in tablaIter %}
-                <tr>
-                  {% for d in info %}
-                  <td>{{d}}</td>
-                  {% endfor %}
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            {% endif %}
-          </div>
-          <h2 style="margin:0.5em;">Solución</h2>
-          <div class="card" style="margin:1em;">
-            {% if sol > 1 %}
-            <p style="margin-left:1em;">La solución obtenida es {{sol}}</p>
-            {% else %}
-            <p style="margin-left:1em;">{{sol}}</p>
-            {% endif %}
+                </tbody>
+              </table>
+              {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-      </div>
-      </div>
-      </body>
-      
-      </html>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      $('#pointsForm').submit(function(event) {
-        event.preventDefault(); // Prevent the form from submitting normally
-        var x = $('#xInput').val();
-        var y = $('#yInput').val();
-        addPointToList(x, y);
-        $('#xInput').val('');
-        $('#yInput').val('');
-      });
-
-      $('#submitPointsBtn').click(async function() {
-        try{
-          var points = await getPointsList();
-          if (points.length > 0) {
-            sendPointsToAPI(points);
-          } else {
-            alert('Please add some points before submitting.');
-          }
-
-        }catch(e){
-          console.log(e);
-        }
-      });
-    });
-
-    function addPointToList(x, y) {
-      var pointItem = $('<li>').text('(' + x + ', ' + y + ')');
-      $('#pointsList').append(pointItem);
-    }
-
-    function getPointsList() {
-      var points = [];
-      $('#pointsList li').each(function() {
-        var pointText = $(this).text();
-        var coordinates = pointText.substring(1, pointText.length - 1).split(', ');
-        var x = parseFloat(coordinates[0]);
-        var y = parseFloat(coordinates[1]);
-        points.push({ x: x, y: y });
-      });
-      return points;
-    }
-
-    async function sendPointsToAPI(points) {
-      // Replace the URL with your API endpoint
-      try{
-        var apiUrl = 'http://localhost:8000/splineCubico/';
-        console.log(typeof points[0].x)
-        points.sort(function(a, b) {
-              return a.x - b.x;
-        });
-        let x = [],y = [];
-        for(let i of points){
-          x.push(i.x),y.push(i.y);
-          // console.log(i.x)
-          // console.log(i.y)
-          // console.log(i);
-        }
-        console.log(x)
-        console.log(y)
-        console.log(points)
-        const response  = await axios.post(apiUrl, {
-          x:JSON.stringify(x),
-          y: JSON.stringify(y),
-          d: JSON.stringify(3),
-        })
-        alert('Points submitted successfully.');
-        console.log(response);
-
-      }catch(e){
-        console.log(e);
-      }
-    }
-  </script>
-</body>
-</html>
-
+        </div>
 {% endblock %}

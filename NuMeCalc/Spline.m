@@ -1,13 +1,13 @@
 %Spline: Calcula los coeficienetes de los polinomios de interpolación de
 % grado d (1, 2, 3) para el conjunto de n datos (x,y), 
 % mediante el método spline.
-function [Tabla] = Spline(x,y,d)
+function [Tabla] = Spline(d)
+    x = readmatrix('pointsX.txt');
+    y = readmatrix('pointsY.txt');
     n=length(x);
     A=zeros((d+1)*(n-1));
     b=zeros((d+1)*(n-1),1);
     
-    x = cell2mat(x);
-    y= cell2mat(y);
     x = double(x);
     y = double(y);
     cua=x.^2;
@@ -139,8 +139,8 @@ function [Tabla] = Spline(x,y,d)
     elseif d==2
         T= table(pts,Tabla(:,1), Tabla(:,2), Tabla(:,3), 'VariableNames', {'polinomio','a', 'b', 'c'})
     else
-        T= table(pts,Tabla(:,1), Tabla(:,2), Tabla(:,3), Tabla(:,4), 'VariableNames',  {'polinomio','a', 'b', 'c', 'd'})
+        T= table(Tabla(:,1), Tabla(:,2), Tabla(:,3), Tabla(:,4), 'VariableNames',  {'a', 'b', 'c', 'd'})
     end
-    writetable(T,'data_Spline.csv')
+    writetable(T,'data_SplineCubico.csv')
     plotSpline(x,Tabla,d)
 end

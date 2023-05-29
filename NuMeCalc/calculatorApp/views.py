@@ -278,25 +278,32 @@ def newton1(request):
 @csrf_exempt
 def splineLineal(request):
     return render(request,'calculatorApp/splineLineal.html',context={})
+
 @csrf_exempt
 def splineCubico(request):
-    if(request.method == 'POST'):
-        data = json.loads(request.body)
-        x = json.loads(data['x'])
-        y = json.loads(data['y'])
-        d = json.loads(data['d'])
-        print("points: ")
+    if(request.method=='POST'):
+        #leemos x
+        x=request.POST.get('x')
+        x=x.replace(' ','')
+        #generamos x
+        xFile=open("pointsX.txt",'w')
+        xFile.write(x)
+        xFile.close()
+        #leemos y
+        y=request.POST.get('y')
+        y=y.replace(' ','')
         print(x)
         print(y)
-        print(d)
-        for i in range(len(x)):
-            x[i] = float(x[i])
-            y[i] = float(y[i])
-        response_data = {
-            'points': "received",
-        }
-        eng.Spline(x,y,d) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_Spline.csv', 'r')
+        #generamos y
+        yFile=open("pointsY.txt",'w')
+        yFile.write(y)
+        yFile.close()
+
+        #corremos matlab
+        eng.Spline(3)
+        
+        #leemos los datos del polinomio
+        csv_file = open('data_SplineCubico.csv', 'r')
         data = csv_file.readlines()
         columnNames = data[0].split(',')
         columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
@@ -305,11 +312,13 @@ def splineCubico(request):
             row = data[i].split(',')
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
-        sol = 1
-        print( columnNames)
-        print( table)
-        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
-    return render(request,'calculatorApp/splineCubico.html',context={})
+
+        print(table)
+        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames})
+        # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
+    
+    else:
+        return render(request, 'calculatorApp/splineCubico.html',context={})
 
 
 @csrf_exempt
@@ -340,7 +349,7 @@ def sendPoints(request):
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
         sol = 1
-        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+        # return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
         # return  JsonResponse(response_data,safe = False)
     else:
         return JsonResponse({'error': 'Invalid request method'})
@@ -367,6 +376,7 @@ def newtonInter(request):
         #leemos los datos del polinomio
         csv_file = open('data_newtonInter.csv', 'r')
         data = csv_file.readlines()
+        print(data)
         data=data[1].split(',')
         data[len(data)-1]=data[len(data)-1].replace("\n",'')
         #hacemos el str del polinomio
@@ -390,6 +400,7 @@ def newtonInter(request):
         polFile.close()
 
         eng.code_graficaNewton(strPol)
+        print(ctxtPol)
         return render(request, 'calculatorApp/newtonInter.html',context={'pol':ctxtPol})
     
     else:
