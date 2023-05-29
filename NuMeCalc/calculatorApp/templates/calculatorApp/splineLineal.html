@@ -1,0 +1,124 @@
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    Secante
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spline Lineal</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    .point-input {
+      width: 100px; /* Adjust the width as needed */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Points Input Form</h1>
+    <form id="pointsForm">
+      <div class="form-group">
+        <label for="xInput">X-coordinate:</label>
+        <input type="number" step="any" class="form-control point-input" id="xInput">
+      </div>
+      <div class="form-group">
+        <label for="yInput">Y-coordinate:</label>
+        <input type="number" step="any" class="form-control point-input" id="yInput">
+      </div>
+      <button type="submit" class="btn btn-primary">Add Point</button>
+    </form>
+
+    <h2>Points List</h2>
+    <ul id="pointsList"></ul>
+
+    <button id="submitPointsBtn" class="btn btn-primary">Submit Points</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      $('#pointsForm').submit(function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        var x = $('#xInput').val();
+        var y = $('#yInput').val();
+        addPointToList(x, y);
+        $('#xInput').val('');
+        $('#yInput').val('');
+      });
+
+      $('#submitPointsBtn').click(async function() {
+        try{
+          var points = await getPointsList();
+          if (points.length > 0) {
+            sendPointsToAPI(points);
+          } else {
+            alert('Please add some points before submitting.');
+          }
+
+        }catch(e){
+          console.log(e);
+        }
+      });
+    });
+
+    function addPointToList(x, y) {
+      var pointItem = $('<li>').text('(' + x + ', ' + y + ')');
+      $('#pointsList').append(pointItem);
+    }
+
+    function getPointsList() {
+      var points = [];
+      $('#pointsList li').each(function() {
+        var pointText = $(this).text();
+        var coordinates = pointText.substring(1, pointText.length - 1).split(', ');
+        var x = parseFloat(coordinates[0]);
+        var y = parseFloat(coordinates[1]);
+        points.push({ x: x, y: y });
+      });
+      return points;
+    }
+
+    async function sendPointsToAPI(points) {
+      // Replace the URL with your API endpoint
+      try{
+        var apiUrl = 'http://localhost:8000/api/sendPoints';
+        console.log(typeof points[0].x)
+        points.sort(function(a, b) {
+              return a.x - b.x;
+        });
+        let x = [],y = [];
+        for(let i of points){
+          x.push(i.x),y.push(i.y);
+          // console.log(i.x)
+          // console.log(i.y)
+          // console.log(i);
+        }
+        console.log(x)
+        console.log(y)
+        console.log(points)
+        const response  = await axios.post(apiUrl, {
+          x:JSON.stringify(x),
+          y: JSON.stringify(y),
+          d: JSON.stringify(1),
+        })
+        alert('Points submitted successfully.');
+        console.log(response);
+
+      }catch(e){
+        console.log(e);
+      }
+    }
+  </script>
+</body>
+</html>
+
+{% endblock %}

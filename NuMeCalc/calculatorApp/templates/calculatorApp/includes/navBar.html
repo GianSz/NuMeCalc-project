@@ -17,11 +17,11 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="biseccion">Método de bisección</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:biseccion' %}biseccion">Método de bisección</a></li>
                             <li><a class="dropdown-item" href="regla_falsa.html">Método de regla falsa</a></li>
                             <li><a class="dropdown-item" href="punto_fijo.html">Método de punto fijo</a></li>
-                            <li><a class="dropdown-item" href="newtonRaph">Método de Newton-Raphson</a></li>
-                            <li><a class="dropdown-item" href="secante">Método de secante</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonRaph' %}newtonRaph">Método de Newton-Raphson</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:secante' %}secante">Método de secante</a></li>
                             <li><a class="dropdown-item" href="newton_multiples_1.html">Método de Newton múltiples 1</a></li>
                             <li><a class="dropdown-item" href="newton_multiples_2.html">Método de Newton múltiples 2</a></li>
                         </ul>
@@ -37,9 +37,9 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="gauss.html">Método de Gauss-Seidel</a></li>
-                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Jacobi</a></li>
-                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de SOR</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:goMatrix' 0 %}">Método de Jacobi</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:goMatrix' 1 %}">Método de Gauss-Seidel</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:goMatrix' 2 %}">Método de SOR</a></li>
                         </ul>
                     </div>
                 </li>
@@ -55,7 +55,8 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="gauss.html">Método de Vandermonte</a></li>
                             <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Newton</a></li>
-                            <li><a class="dropdown-item" href="factorizacion_LU.html">Método de Lagrange</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:splineLineal'%}">Spline Lineal</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:splineCubico'%}">Spline Cúbico</a></li>
                         </ul>
                     </div>
                 </li>

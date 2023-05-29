@@ -1,0 +1,69 @@
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    Método SOR
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Matrix Input Form</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    .matrix-input {
+      width: 100px; /* Adjust the width as needed */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form>
+    <h4> Enter Matrix Dimensions: </h4>
+      <div class="form-group">
+        <label for="matrixRows">Number of Rows:</label>
+        <input type="number" class="form-control" id="matrixRows" min="1" max="10">
+      </div>
+      <div class="form-group">
+        <label for="matrixCols">Number of Columns:</label>
+        <input type="number" class="form-control" id="matrixCols" min="1" max="10">
+      </div>
+      <h6> Enter values of Matrix A: </h6>
+      <div id="matrixInputs"></div>
+      <button style="margin: 6px;" type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#matrixRows, #matrixCols').on('input', function() {
+        var rows = $('#matrixRows').val();
+        var cols = $('#matrixCols').val();
+        generateMatrixInputs(rows, cols);
+      });
+    });
+
+    function generateMatrixInputs(rows, cols) {
+      var matrixInputs = $('#matrixInputs');
+      matrixInputs.empty();
+      for (var i = 0; i < rows; i++) {
+        var rowContainer = $('<div class="form-row">');
+        for (var j = 0; j < cols; j++) {
+          var inputId = 'input_' + i + '_' + j;
+          var input = $('<input type="number" step="any" class="form-control matrix-input">');
+          input.attr('id', inputId);
+          rowContainer.append($('<div class="col">').append(input));
+        }
+        matrixInputs.append(rowContainer);
+      }
+    }
+  </script>
+</body>
+</html>
+
+{% endblock %}
