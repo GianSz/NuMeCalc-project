@@ -14,13 +14,23 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
     %Revisamos si el inicio del intervalo ya es una raíz
     if fi==0
         E=0;
-        T = xi + " es raiz de f(x)"
+        fprintf('%f es raiz de f(x) \n',xi)
+        N(1)= 0
+        XM(1)=xi
+        fm(1)=fi
+        E(1)=0
+        T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
         
     
     %Revisamos si el final del intervalo ya es una raíz
     elseif fs==0
         E=0;
-        T = xs + " es raiz de f(x)"
+        fprintf('%f es raiz de f(x) \n',xs)
+        N(1)= 0
+        XM(1)=xs
+        fm(1)=fs
+        E(1)=0
+        T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
         
     
     %Revisamos que el intervalo si cumpla la condición
@@ -94,7 +104,12 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
         writetable(T,'data_biseccion.csv')
 
     else
-       T = 'El intervalo es inadecuado' 
+       fprintf('El intervalo es inadecuado') 
+       N(1)= 0
+       XM(1)=0
+       fm(1)=0
+       E(1)=0
+       T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
 
     end    
     

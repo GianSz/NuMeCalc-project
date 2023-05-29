@@ -14,22 +14,28 @@ def calculatorPage(request):
 # -----------------------------------------Capítulo 1--------------------------------------------------------
 
 def biseccion(request):
-    #Arguments we need to do the function
-    xi = -1.0   #Be careful to put all these data in float type!
-    xs = 1.0
-    tol = 0.005
-    typeTol = 0
-    # tipos:
-    # - 0 -> dc
-    # - 1 -> cs
-    niter = 100.0 
-    fun = '(x^2)-1' #read the function given
-    T = eng.code_biseccion(xi,xs,tol,typeTol,niter,fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-    if(T == 'El intervalo es inadecuado' or ('es raiz de f(x)' in T)):
-        print(T)
-    else:
-        df = pd.read_csv('data_biseccion.csv')
-        print(df)
+    if (request.method == 'POST'):
+        #Arguments we need to do the function
+        xi = request.POST.get('inicioInt')   #Be careful to put all these data in float type!
+        xs = request.POST.get('finInt')
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        niter = request.POST.get('niter')
+        fun = request.POST.get('funcion') #read the function given
+        print("llegue")
+        eng.code_biseccion(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_biseccion.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        
+        return render(request, 'biseccion.html',context={'tablaIter':table,'title':columnNames})
+    
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 def secante(request):
