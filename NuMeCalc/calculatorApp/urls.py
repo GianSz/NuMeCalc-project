@@ -9,5 +9,9 @@ urlpatterns = [
     path('secante/', views.secante, name='secante'),
     path('newtonRaph/', views.newtonRaph, name='newtonRaph'),
     #capitulo 2
+    path('sor/',views.sor, name = 'sor'),
     #capitulo 3
+    path('splineLineal/',views.splineLineal, name = 'splineLineal'),
+    path('splineCubico/',views.splineCubico, name = 'splineCubico'),
+    path('api/sendPoints', views.sendPoints, name='sendPoints'),
 ]

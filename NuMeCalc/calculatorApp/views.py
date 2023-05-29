@@ -1,9 +1,10 @@
 from django.shortcuts import render
 import matlab.engine #Download this library by doing python -m pip install matlabengine
 import pandas as pd
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 eng = matlab.engine.start_matlab() #opens matlab
-
+import json
 # Create your views here.
 def selectionPage(request):
     return render(request, 'calculatorApp/selectionPage.html', context={})
@@ -52,6 +53,34 @@ def newtonRaph(request):
 
 # -----------------------------------------Capítulo 2--------------------------------------------------------
 
+def sor(request):
+    return render(request,'calculatorApp/sor.html',context={})
 
 
 # -----------------------------------------Capítulo 3--------------------------------------------------------
+def splineLineal(request):
+    return render(request,'calculatorApp/splineLineal.html',context={})
+def splineCubico(request):
+    return render(request,'calculatorApp/splineCubico.html',context={})
+
+@csrf_exempt
+def sendPoints(request):
+    if(request.method == 'POST'):
+        data = json.loads(request.body)
+        x = json.loads(data['x'])
+        y = json.loads(data['y'])
+        d = json.loads(data['d'])
+        print("points: ")
+        print(x)
+        print(y)
+        print(d)
+
+        response_data = {
+            'points': "received",
+        }
+        eng.Spline(x,y,d) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        df = pd.read_csv('data_Spline.csv')
+        print(df)
+        return  JsonResponse(response_data,safe = False)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
