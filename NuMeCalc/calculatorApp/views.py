@@ -125,11 +125,48 @@ def matJacobiSeidSor(request):
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 # -----------------------------------------Capítulo 3--------------------------------------------------------
-def moveData(image_name, csv_name):
-    ruta_archivo = os.path.join(BASE_DIR, image_name)
-    ruta_destino = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'images', image_name)
-    os.rename(ruta_archivo, ruta_destino)
+def vandermonde(request):
+    x_list = request.POST[x_list].split(sep=',')
+    y_list = request.POST[y_list].split(sep=',')
 
-    ruta_archivo = os.path.join(BASE_DIR, csv_name)
-    ruta_destino = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', csv_name)
-    os.rename(ruta_archivo, ruta_destino)
+    file_pathA = os.path.join(BASE_DIR, 'matrix-A_vandermonde.txt')
+    if(os.path.isfile(file_pathA)):
+        os.remove(file_pathA)
+
+    file_pathb = os.path.join(BASE_DIR, 'matrix-b_vandermonde.txt')
+    if(os.path.isfile(file_pathb)):
+        os.remove(file_pathb)
+
+    archivo1 = open('matrix-A_vandermonde.txt', 'w')
+    archivo2 = open('matrix-b_vandermonde.txt', 'w')
+
+    for i,x in enumerate(x_list):
+        x = int(x)
+        count = len(x_list)-1
+        while(count>=0):
+            if count==0:
+                archivo1.write(f'1')
+                break
+            archivo1.write(f'{x**count},')
+            count-=1
+        if(i==len(x_list)-1):
+            break
+        archivo1.write('\n')
+    
+    for i,y in enumerate(y_list):
+        if(i==len(y_list)-1):
+            archivo2.write(y)
+            break
+        archivo2.write(f'{y}\n')
+
+    eng.code_vandermonde()
+    return render(request, 'calculatorApp/vandermonde.html', context={})
+
+def moveData(image_name, csv_name):
+    file_path = os.path.join(BASE_DIR, image_name)
+    destination_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'images', image_name)
+    os.rename(file_path, destination_path)
+
+    file_path = os.path.join(BASE_DIR, csv_name)
+    destination_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', csv_name)
+    os.rename(file_path, destination_path)
