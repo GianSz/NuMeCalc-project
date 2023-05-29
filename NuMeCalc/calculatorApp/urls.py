@@ -13,6 +13,7 @@ urlpatterns = [
     path('introMatrix/<int:method>/', views.introMatrix, name='introMatrix'),
     path('sysEq/', views.matJacobiSeidSor, name='sysEq'),
     #capitulo 3
+    path('newtonInter/',views.newtonInter, name = 'newtonInter'),
     path('splineLineal/',views.splineLineal, name = 'splineLineal'),
     path('splineCubico/',views.splineCubico, name = 'splineCubico'),
     path('api/sendPoints', views.sendPoints, name='sendPoints'),

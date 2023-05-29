@@ -238,3 +238,53 @@ def sendPoints(request):
         return  JsonResponse(response_data,safe = False)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
+def newtonInter(request):
+    if(request.method=='POST'):
+        #leemos x
+        x=request.POST.get('x')
+        x=x.replace(' ','')
+        #generamos x
+        xFile=open("pointsX.txt",'w')
+        xFile.write(x)
+        xFile.close()
+        #leemos y
+        y=request.POST.get('y')
+        y=y.replace(' ','')
+        #generamos y
+        yFile=open("pointsY.txt",'w')
+        yFile.write(y)
+        yFile.close()
+
+        #corremos matlab
+        eng.code_NewtonFull()
+        #leemos los datos del polinomio
+        csv_file = open('data_newtonInter.csv', 'r')
+        data = csv_file.readlines()
+        data=data[1].split(',')
+        data[len(data)-1]=data[len(data)-1].replace("\n",'')
+        #hacemos el str del polinomio
+        strPol=''
+        ctxtPol=[]
+        length=len(data)
+        for i in range(len(data)):
+            #(coef,exp)
+            ctxtPol.append((data[i],str(length-1-i)))
+            if(i==length-1):
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)
+            else:
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)+"+"
+
+        #generamos pol
+        polFile=open("polNI.txt",'w')
+        text=""
+        for t in data:
+            text+=t+','
+        polFile.write(text)
+        polFile.close()
+
+        eng.code_graficaNewton(strPol)
+        return render(request, 'calculatorApp/newtonInter.html',context={'pol':ctxtPol})
+    
+    else:
+        return render(request, 'calculatorApp/newtonInter.html',context={})
