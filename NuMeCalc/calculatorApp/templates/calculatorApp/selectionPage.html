@@ -13,7 +13,7 @@
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
     <div #id="biseccion" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="biseccion"><h5 class="card-title">Método de bisección</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:biseccion'%}"><h5 class="card-title">Método de bisección</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -37,7 +37,7 @@
     </div>
     <div #id="newton" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="newtonRaph"><h5 class="card-title">Método de Newton-Raphson</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:newtonRaph'%}"><h5 class="card-title">Método de Newton-Raphson</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -45,7 +45,7 @@
     </div>
     <div #id="secante" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="secante"><h5 class="card-title">Método de secante</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:secante'%}"><h5 class="card-title">Método de secante</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -73,7 +73,7 @@
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
     <div #id="gauss-seid" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="goMatrix/0"><h5 class="card-title">Método de Gauss-Seidel</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:goMatrix' 0 %}"><h5 class="card-title">Método de Jacobi</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -81,15 +81,15 @@
     </div>
     <div #id="jacobi" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="goMatrix/1"><h5 class="card-title">Método de Jacobi</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:goMatrix' 1 %}"><h5 class="card-title">Método de Gauss-Seidel</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
         </div>
     </div>
-    <div #id="SOR" class="card" style="width: 18rem;">
+    <div #id="sor" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="goMatrix/2"><h5 class="card-title">Método de SOR</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:goMatrix' 2%}"><h5 class="card-title">Método de SOR</h5></a>
             <hr>
             <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
             <p class="card-text">--descripción--</p>
@@ -123,5 +123,22 @@
             <p class="card-text">--descripción--</p>
         </div>
     </div>
+    <div #id="Spline Lineal" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="/splineLineal"><h5 class="card-title">Spline Lineal</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--Interpolación mediante Ecuaciones continuas y segmentadas--</p>
+        </div>
+    </div>
+    <div #id="Spline Cúbico" class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <a class="nav-link active" href="/splineCubico"><h5 class="card-title">Spline Cúbico</h5></a>
+            <hr>
+            <h6 class="card-subtitle mb-2 text-muted">xn=?</h6>
+            <p class="card-text">--Interpolación mediante Ecuaciones continuas y segmentadas--</p>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

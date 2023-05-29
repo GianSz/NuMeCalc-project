@@ -10,12 +10,19 @@
 
 {% block content %}
 <div style="height: 18em;">
-    <div class="card text-center" style="margin: 7em 15em;">
+    <div class="card text-center" style="margin: 3em 15em;">
         <div class="card-header">
             Ingrese las dimensiones de la matriz
         </div>
         <div class="card-body">
-            <form action="{{method}}" method="post">
+            {%if method == 'jacobi' %}
+                <form action="{% url 'calculatorApp:introMatrix' 0%}" method="post">
+            {%elif method == 'gaussSeid' %}
+                <form action="{% url 'calculatorApp:introMatrix' 1%}" method="post">
+            {%elif method == 'sor' %}
+                <form action="{% url 'calculatorApp:introMatrix' 2%}" method="post">
+            {%endif%}
+                {%csrf_token%}
                 <input type="number" class="form-control" name="n" id="n" min="2" step="1" placeholder="2" required>
                 <button type="submit" class="btn btn-primary" style="margin: 1em;">Continuar</a>
             </form>
