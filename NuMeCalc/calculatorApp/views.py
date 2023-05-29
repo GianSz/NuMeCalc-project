@@ -42,6 +42,33 @@ def biseccion(request):
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 def reglaFalsa(request):
+    if (request.method == 'POST'):
+        #Arguments we need to do the function
+        xi = request.POST.get('inicioInt')   #Be careful to put all these data in float type!
+        xs = request.POST.get('finInt')
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        niter = request.POST.get('niter')
+        fun = request.POST.get('funcion') #read the function given
+        eng.code_ReglaFalsa(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        csv_file = open('data_reglaFalsa.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        if(len(data[len(data)-1]) == 1):
+            if data[1].replace('\n','') == "-1":
+                sol = "Intervalo Inválido"
+            else:
+                resp = data[1].replace('\n','')
+                sol = "falla en "+resp+" iteraciones"
+        else:
+            sol = "solución es "+table[len(table)-1][3]
+        return render(request, 'calculatorApp/reglaFalsa.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
     return render(request,'calculatorApp/reglaFalsa.html',context={})
 
 def secante(request):
