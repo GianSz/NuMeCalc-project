@@ -19,7 +19,7 @@
     </div>
     <div #id="punto_fijo" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="punto_fijo.html"><h5 class="card-title">Método de punto fijo</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:puntoFijo' %}"><h5 class="card-title">Método de punto fijo</h5></a>
         </div>
     </div>
     <div #id="newton" class="card" style="width: 18rem;">
@@ -39,7 +39,7 @@
     </div>
     <div #id="newton_multiples_2" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="newton_multiples_2.html"><h5 class="card-title">Método de Newton múltiples 2</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:newtonRaph2' %}"><h5 class="card-title">Método de Newton múltiples 2</h5></a>
         </div>
     </div>
 </div>
@@ -67,7 +67,7 @@
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 1em; margin: 1em;">
     <div #id="vander" class="card" style="width: 18rem;">
         <div class="card-body text-center">
-            <a class="nav-link active" href="gauss.html"><h5 class="card-title">Método de Vandermonte</h5></a>
+            <a class="nav-link active" href="{% url 'calculatorApp:vandermonde' %}"><h5 class="card-title">Método de Vandermonde</h5></a>
         </div>
     </div>
     <div #id="newtonInt" class="card" style="width: 18rem;">

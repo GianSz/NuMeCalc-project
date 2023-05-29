@@ -62,12 +62,13 @@ function T = code_newtonRaph2(x0, tol , typeTol, niter, fun)
         fprintf('Fracasó en %f iteraciones\n', niter-1);
     end
     T = table(N', XM', FM', DFM', DDFM', E', VariableNames=["n","Xm","Fm","Dfm","Ddfm","Error"]);
-    fig = figure;
+    fig = figure('Visible', 'off');
     xplot=((xm-2):0.1:(xm+2));
     hold on
     yline(0);
     plot(xplot,eval(subs(f,xplot)));
     print(fig,'grafica_newtonRaph2','-dpng')
     hold off
+    close(fig);
     writetable(T,'data_newtonRaph2.csv')
 end

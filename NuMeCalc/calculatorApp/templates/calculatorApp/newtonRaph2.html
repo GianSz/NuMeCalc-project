@@ -3,24 +3,22 @@
 {% load static %}
 
 {% block title %}
-    Newton Raphson
+    Netwon-Raphson 2
 {% endblock %}
 
 {% block method_title %}
-    MÉTODO NEWTON-RAPHSON
+    MÉTODO NEWTON-RAPHSON 2
 {% endblock %}
 
 {% block method_desc %}
-    Antes de correr este código recuerde que la derivada de la x0 no puede ser 0, de lo contrario el método no encontrará una solución. 
-    Además, el método no debe calcularse cerca de mínimos o máximos locales puesto que esto no permitirá converger el método.
 {% endblock %}
 
 {% block content %}
-<form  action="{% url 'calculatorApp:newtonRaph' %}" method="post" style="margin: 2em;">
+<form  action="{% url 'calculatorApp:newtonRaph2' %}" method="post" style="margin: 2em;">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="funcion" class="form-label">Función a graficar f(x)</label>
-        <input type="text" class="form-control" id="funcion" name="funcion" aria-describedby="info" required>
+        <label for="function" class="form-label">Función a graficar f(x)</label>
+        <input type="text" class="form-control" id="function" name="function" aria-describedby="info" required>
         <div id="info" class="form-text">Por favor escribir la función de forma literal y tener en cuenta las siguientes consideraciones:</div>
         <div id="info" class="form-text">   - Si va poner un número elevado a algo usar ^</div>
         <div id="info" class="form-text">   - Para representar euler escribir exp(1)</div>
@@ -32,12 +30,12 @@
         <input type="text" class="form-control" id="x0" name="x0" required>
     </div>
     <div class="mb-3">
-        <label for="tolerancia" class="form-label">Tolerancia</label>
-        <input type="text" class="form-control" id="tolerancia" name="tolerancia" required>
+        <label for="tolerance" class="form-label">Tolerancia</label>
+        <input type="text" class="form-control" id="tolerance" name="tolerance" required>
     </div>
     <div class="mb-3">
-        <label for="tipoError" class="form-label">Tipo de error</label>
-        <select class="form-select" id="tipoError" name="tipoError" required>
+        <label for="typeTol" class="form-label">Tipo de error</label>
+        <select class="form-select" id="typeTol" name="typeTol" required>
             <option selected></option>
             <option value="0">Decimales correctos</option>
             <option value="1">Cifras significativas</option>
@@ -54,5 +52,5 @@
 {% endblock %}
 
 {% block function_image %}
-<img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función" src="{% static 'images/grafica_newtonRaph.png' %}">
+<img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función" src="{% static 'images/grafica_newtonRaph2.png' %}">
 {% endblock %}

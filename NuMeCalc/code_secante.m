@@ -73,14 +73,14 @@ function T = code_secante(x0,x1,Tol,TypeTol,niter,fun)
         end
 
         T = table(N', XN', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        fig = figure;
+        fig = figure('Visible', 'off');
         xplot=((xn-2):0.1:(xn+2));
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
         print(fig,'grafica_secante','-dpng')
         hold off
-        
+        close(fig);
         writetable(T,'data_secante.csv')
         
 end

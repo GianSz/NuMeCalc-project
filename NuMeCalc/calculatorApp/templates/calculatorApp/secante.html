@@ -1,94 +1,60 @@
-{% extends 'calculatorApp/bases/base.html' %}
+{% extends 'calculatorApp/bases/nonlinear_equations.html' %}
+
+{% load static %}
 
 {% block title %}
     Secante
 {% endblock %}
 
+{% block method_title %}
+    MÉTODO SECANTE
+{% endblock %}
+
+{% block method_desc %}
+{% endblock %}
+
 {% block content %}
-
-<h2 style="color:blue; margin:1em;">MÉTODO SECANTE</h2>
-<p style="margin-left: 2em;">Este método sirve para hallar la solución, o una aproximación de esta, para ecuaciones no lineales.</p>
-
-<div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="card" style="margin: 2em;">
-            <form  action="{% url 'calculatorApp:secante' %}" method="post" style="margin: 2em;">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="funcion" class="form-label">Función a graficar</label>
-                    <input type="text" class="form-control" id="funcion" name="funcion" aria-describedby="info" required>
-                    <div id="info" class="form-text">Por favor escribir la función de forma literal y tener en cuenta las siguientes consideraciones:</div>
-                    <div id="info" class="form-text">   - Si va poner un número elevado a algo usar ^</div>
-                    <div id="info" class="form-text">   - Para representar euler escribir exp(1)</div>
-                    <div id="info" class="form-text">   - Para logaritmo natural usar log()</div>
-                    <div id="info" class="form-text">   - Para poner valor absoluto usar abs()</div>
-                </div>
-                <div class="mb-3">
-                    <label for="x0" class="form-label">x0</label>
-                    <input type="text" class="form-control" id="x0" name="x0" required>
-                </div>
-                <div class="mb-3">
-                    <label for="x1" class="form-label">x1</label>
-                    <input type="text" class="form-control" id="x1" name="x1" required>
-                </div>
-                <div class="mb-3">
-                    <label for="tolerancia" class="form-label">Tolerancia</label>
-                    <input type="text" class="form-control" id="tolerancia" name="tolerancia" required>
-                </div>
-                <div class="mb-3">
-                    <label for="tipoError" class="form-label">Tipo de error</label>
-                    <select class="form-select" id="tipoError" name="tipoError" required>
-                        <option selected></option>
-                        <option value="0">Decimales correctos</option>
-                        <option value="1">Cifras significativas</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="niter" class="form-label">Cantidad máxima de iteraciones</label>
-                    <input type="text" class="form-control" id="niter" name="niter" required>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Calcular</button>
-                </div>
-              </form>
-        </div>
+<form  action="{% url 'calculatorApp:secante' %}" method="post" style="margin: 2em;">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="funcion" class="form-label">Función a graficar f(x)</label>
+        <input type="text" class="form-control" id="funcion" name="funcion" aria-describedby="info" required>
+        <div id="info" class="form-text">Por favor escribir la función de forma literal y tener en cuenta las siguientes consideraciones:</div>
+        <div id="info" class="form-text">   - Si va poner un número elevado a algo usar ^</div>
+        <div id="info" class="form-text">   - Para representar euler escribir exp(1)</div>
+        <div id="info" class="form-text">   - Para logaritmo natural usar log()</div>
+        <div id="info" class="form-text">   - Para poner valor absoluto usar abs()</div>
     </div>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="card" style="margin:2em;">
-            <h2 style="margin:0.5em;">Gráfica</h2>
-            <div class="card" style="height: 60%; width: 60%; margin:1em;">
-                <!--<img src="../../../grafica_biseccion.png">-->
-            </div>
-            <h2 style="margin:0.5em;">Tabla de iteraciones</h2>
-            <div class="card" style="margin:1em;">
-                {% if title %}
-                    <table class=" table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                {% for i in title %}
-                                    <th scope="col">{{i}}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for info in tablaIter %}
-                                <tr>
-                                    {% for d in info %}
-                                    <td>{{d}}</td>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% endif %}
-            </div>
-            <h2 style="margin:0.5em;">Solución</h2>
-            <div class="card" style="margin:1em;">
-                {% if sol %}
-                    <p style="margin-left:1em;">La solución obtenida es {{sol}}</p>
-                {% endif %}
-            </div>
-        </div>
+    <div class="mb-3">
+        <label for="x0" class="form-label">x0</label>
+        <input type="text" class="form-control" id="x0" name="x0" required>
     </div>
-</div>
+    <div class="mb-3">
+        <label for="x1" class="form-label">x1</label>
+        <input type="text" class="form-control" id="x1" name="x1" required>
+    </div>
+    <div class="mb-3">
+        <label for="tolerancia" class="form-label">Tolerancia</label>
+        <input type="text" class="form-control" id="tolerancia" name="tolerancia" required>
+    </div>
+    <div class="mb-3">
+        <label for="tipoError" class="form-label">Tipo de error</label>
+        <select class="form-select" id="tipoError" name="tipoError" required>
+            <option selected></option>
+            <option value="0">Decimales correctos</option>
+            <option value="1">Cifras significativas</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="niter" class="form-label">Cantidad máxima de iteraciones</label>
+        <input type="text" class="form-control" id="niter" name="niter" required>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Calcular</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block function_image %}
+<img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función" src="{% static 'images/grafica_secante.png' %}">
 {% endblock %}

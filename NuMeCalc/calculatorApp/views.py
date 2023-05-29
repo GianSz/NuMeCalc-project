@@ -14,6 +14,7 @@ import json
 # Create your views here.
 def selectionPage(request):
     return render(request, 'calculatorApp/selectionPage.html', context={})
+
 # -----------------------------------------Capítulo 1--------------------------------------------------------
 
 def biseccion(request):
@@ -26,36 +27,33 @@ def biseccion(request):
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
         eng.code_biseccion(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_biseccion.csv', 'r')
-        data = csv_file.readlines()
-        columnNames = data[0].split(',')
-        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
-        table = []
-        for i in range(1, len(data)):
-            row = data[i].split(',')
-            row[len(row)-1] = row[len(row)-1].replace('\n','')
-            table.append(row)
-        if(float(table[len(table)-1][3])<= float(tol)):
-            sol = table[len(table)-1][1]
-        else:
-            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
+        moveData('grafica_biseccion.png', 'data_biseccion.csv')
+
+        columnNames, table, sol = getInfoTable('data_biseccion.csv', tol, niter)
+
         return render(request, 'calculatorApp/biseccion.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
     
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 def puntoFijo(request):
     #Arguments we need to do the function
-    
-    x0 = 0
-    tol = 0.005
-    typeTol = 0
-    # tipos:
-    # - 0 -> dc
-    # - 1 -> cs
-    niter = 100.0
-    fun = '2*(exp(1)^(x^2))-5*x'
-    funG = '(2*(exp(1)^(x^2)))/5'
-    T = eng.code_puntoFijo(x0, tol, typeTol, niter, fun, funG)
+    if(request.method == 'POST'):
+        x0 = float(request.POST['x0'])
+        tol = float(request.POST['tolerance'])
+        typeTol = int(request.POST['typeTol'])
+        # tipos:
+        # - 0 -> dc
+        # - 1 -> cs
+        niter = int(request.POST['niter'])
+        fun = request.POST['function']
+        funG = request.POST['functionG']
+
+        T = eng.code_puntoFijo(x0, tol, typeTol, niter, fun, funG)
+        moveData('grafica_puntoFijo.png', 'data_puntoFijo.csv')
+
+        columnNames, table, sol = getInfoTable('data_puntoFijo.csv', tol, niter)
+
+        return render(request, 'calculatorApp/puntoFijo.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
     
     return render(request, 'calculatorApp/puntoFijo.html', context={})
 
@@ -68,22 +66,15 @@ def secante(request):
         typeTol = request.POST.get('tipoError')
         niter = request.POST.get('niter') 
         fun = request.POST.get('funcion') #read the function given
+
         eng.code_secante(float(x0),float(x1),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_secante.csv', 'r')
-        data = csv_file.readlines()
-        columnNames = data[0].split(',')
-        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
-        table = []
-        for i in range(1, len(data)):
-            row = data[i].split(',')
-            row[len(row)-1] = row[len(row)-1].replace('\n','')
-            table.append(row)
-        if(float(table[len(table)-1][3])<= float(tol)):
-            sol = table[len(table)-1][1]
-        else:
-            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
-        return render(request, 'calculatorApp/secante.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
-    return render(request, 'calculatorApp/secante.html',context={})
+        moveData('grafica_secante.png', 'data_secante.csv')
+
+        columnNames, table, sol = getInfoTable('data_secante.csv', tol, niter)
+
+        return render(request, 'calculatorApp/secante.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
+    
+    return render(request, 'calculatorApp/secante.html', context={})
 
 def newtonRaph(request):
     if (request.method == 'POST'):
@@ -93,39 +84,37 @@ def newtonRaph(request):
         typeTol = request.POST.get('tipoError')
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
+        
         eng.code_newtonRaph(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_newtonRaph.csv', 'r')
-        data = csv_file.readlines()
-        columnNames = data[0].split(',')
-        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
-        table = []
-        for i in range(1, len(data)):
-            row = data[i].split(',')
-            row[len(row)-1] = row[len(row)-1].replace('\n','')
-            table.append(row)
-            
-        if(float(table[len(table)-1][3])<= float(tol)):
-            sol = table[len(table)-1][1]
-        else:
-            sol="No se llegó a la respuesta esperada con " + niter + " iteraciones"
+        moveData('grafica_newtonRaph.png', 'data_newtonRaph.csv')
 
-        return render(request, 'calculatorApp/newtonRaph.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+        columnNames, table, sol = getInfoTable('data_newtonRaph.csv', tol, niter)
+
+        return render(request, 'calculatorApp/newtonRaph.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
     
-    return render(request, 'calculatorApp/newtonRaph.html',context={})
+    return render(request, 'calculatorApp/newtonRaph.html', context={})
 
 def newtonRaph2(request):
-    #Arguments we need to do the function
-    x0 = 0  #Be careful to put all these data in float type!
-    tol = 0.005
-    typeTol = 0
-    # tipos:
-    # - 0 -> dc
-    # - 1 -> cs
-    niter = 100.0
-    fun = '2*(exp(1)^(x^2))-5*x'
-    T = eng.code_newtonRaph2(x0, tol, typeTol, niter, fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+    if(request.method == 'POST'):
+        #Arguments we need to do the function
+        x0 = float(request.POST['x0'])
+        tol = float(request.POST['tolerance'])
+        typeTol = int(request.POST['typeTol'])
+        # tipos:
+        # - 0 -> dc
+        # - 1 -> cs
+        niter = int(request.POST['niter'])
+        fun = request.POST['function']
+
+        T = eng.code_newtonRaph2(x0, tol, typeTol, niter, fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        moveData('grafica_newtonRaph2.png', 'data_newtonRaph2.csv')
+
+        columnNames, table, sol = getInfoTable('data_newtonRaph2.csv', tol, niter)
+
+        return render(request, 'calculatorApp/newtonRaph2.html', context={'graph':True, 'title':columnNames, 'table':table, 'sol':sol})
 
     return render(request, 'calculatorApp/newtonRaph2.html', context={})
+
 # -----------------------------------------Capítulo 2--------------------------------------------------------
 
 def goMatrix(request,method):
@@ -316,3 +305,27 @@ def moveData(image_name, csv_name):
     file_path = os.path.join(BASE_DIR, csv_name)
     destination_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', csv_name)
     os.rename(file_path, destination_path)
+
+def getInfoTable(file_name, tol, niter):
+    file_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', file_name)
+    csv_file = open(file_path, 'r')
+    data = csv_file.readlines()
+    columnNames = data[0].split(',')
+    columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+
+    table = []
+    for i in range(1, len(data)):
+        row = data[i].split(',')
+        row[len(row)-1] = row[len(row)-1].replace('\n','')
+        table.append(row)
+
+    try:
+        row = table[len(table)-1]
+        if(float(row[len(row)-1]) <= float(tol)):
+            sol = row[1]
+            sol = f"La solución obtenida es: {sol}"
+        else:
+            sol=f"No se llegó a la respuesta esperada con {niter} iteraciones"
+    except(ValueError):
+        sol = "Recuerda que la solución debe estar dentro del intervalo ingresado"
+    return columnNames, table, sol

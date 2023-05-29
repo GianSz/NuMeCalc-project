@@ -41,13 +41,14 @@ function T = code_puntoFijo(x0, tol ,typeTol, niter, fun, funG)
 
     end
     T = table(N', n', fm', E', VariableNames=["n","Xm","Fm","Error"]);
-    fig = figure;
+    fig = figure('Visible', 'off');
     xplot=((xm-2):0.1:(xm+2));
     hold on
     yline(0);
     plot(xplot,eval(subs(f,xplot)));
     print(fig,'grafica_puntoFijo','-dpng')
     hold off
+    close(fig);
     writetable(T,'data_puntoFijo.csv')
 
 end

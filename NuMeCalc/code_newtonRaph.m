@@ -55,13 +55,14 @@ function T = code_newtonRaph(x0,Tol,TypeTol,niter,fun)
         end
 
         T = table((0:1:c)', xn', fm', E', VariableNames=["n","x_n","f_m","E"]);
-        fig = figure;
+        fig = figure('Visible', 'off');
         xplot=((x0-2):0.1:(x0+2));
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
         print(fig,'grafica_newtonRaph','-dpng')
         hold off
+        close(fig);
         writetable(T,'data_newtonRaph.csv')
         
 end
