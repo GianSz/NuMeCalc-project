@@ -14,12 +14,14 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
     %Revisamos si el inicio del intervalo ya es una raíz
     if fi==0
         E=0;
-        fprintf('%f es raiz de f(x)',xi)
+        T = xi + " es raiz de f(x)"
+        
     
     %Revisamos si el final del intervalo ya es una raíz
     elseif fs==0
         E=0;
-        fprintf('%f es raiz de f(x)',xs)
+        T = xs + " es raiz de f(x)"
+        
     
     %Revisamos que el intervalo si cumpla la condición
     elseif fs*fi<0
@@ -81,12 +83,7 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
 
         end
 
-    else
-       fprintf('El intervalo es inadecuado') 
-
-    end    
-
-    T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
+        T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
         fig = figure;
         xplot=((xm-2):0.1:(xm+2));
         hold on
@@ -94,6 +91,11 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
         plot(xplot,eval(subs(f,xplot)));
         print(fig,'grafica_biseccion','-dpng')
         hold off
-    writetable(T,'data_biseccion.csv')
+        writetable(T,'data_biseccion.csv')
+
+    else
+       T = 'El intervalo es inadecuado' 
+
+    end    
     
 end
