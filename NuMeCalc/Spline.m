@@ -139,8 +139,8 @@ function [Tabla] = Spline(d)
     elseif d==2
         T= table(pts,Tabla(:,1), Tabla(:,2), Tabla(:,3), 'VariableNames', {'polinomio','a', 'b', 'c'})
     else
-        T= table(Tabla(:,1), Tabla(:,2), Tabla(:,3), Tabla(:,4), 'VariableNames',  {'a', 'b', 'c', 'd'})
+        T= table(pts,Tabla(:,1), Tabla(:,2), Tabla(:,3), Tabla(:,4), 'VariableNames',  {'polinomio','a', 'b', 'c', 'd'})
     end
-    writetable(T,'data_SplineCubico.csv')
+    writetable(T,'data_Spline.csv')
     plotSpline(x,Tabla,d)
 end

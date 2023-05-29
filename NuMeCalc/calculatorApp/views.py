@@ -277,7 +277,44 @@ def newton1(request):
 # -----------------------------------------Capítulo 3--------------------------------------------------------
 @csrf_exempt
 def splineLineal(request):
-    return render(request,'calculatorApp/splineLineal.html',context={})
+    if(request.method=='POST'):
+        #leemos x
+        x=request.POST.get('x')
+        x=x.replace(' ','')
+        #generamos x
+        xFile=open("pointsX.txt",'w')
+        xFile.write(x)
+        xFile.close()
+        #leemos y
+        y=request.POST.get('y')
+        y=y.replace(' ','')
+        print(x)
+        print(y)
+        #generamos y
+        yFile=open("pointsY.txt",'w')
+        yFile.write(y)
+        yFile.close()
+
+        #corremos matlab
+        eng.Spline(1)
+        
+        #leemos los datos del polinomio
+        csv_file = open('data_Spline.csv', 'r')
+        data = csv_file.readlines()
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+
+        print(table)
+        return render(request, 'calculatorApp/splineLineal.html',context={'tablaIter':table,'title':columnNames})
+        # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
+    
+    else:
+        return render(request, 'calculatorApp/splineLineal.html',context={})
 
 @csrf_exempt
 def splineCubico(request):
@@ -303,7 +340,7 @@ def splineCubico(request):
         eng.Spline(3)
         
         #leemos los datos del polinomio
-        csv_file = open('data_SplineCubico.csv', 'r')
+        csv_file = open('data_Spline.csv', 'r')
         data = csv_file.readlines()
         columnNames = data[0].split(',')
         columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
