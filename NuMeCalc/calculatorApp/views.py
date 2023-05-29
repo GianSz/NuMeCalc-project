@@ -73,15 +73,66 @@ def goMatrix(request,method):
         messages.error(request,"Estas ingresando incorrectamente a un metodo matricial")
         return redirect('selectionPage')
 
+def introMatrix(request,method):
+    if(method==0):
+        method='jacobi'
+    elif(method==1):
+        method='gaussSeid'
+    elif(method==2):
+        method='sor'
+    else:
+        messages.error(request,"Estas ingresando incorrectamente a un metodo matricial")
+        return redirect('selectionPage')
+    
+    n=int(request.POST.get('n'))
+    gridDivR=range(1,n+2)
+    gridDivC=range(1,n+4)
+
+    return render(request,'calculatorApp/cap2-introMatrix.html',context={
+        'method':method,
+        'n':n,
+        'ranN':range(1,n+1),
+        'lim_n':n+1,
+        'gridDivR':gridDivR,
+        'gridDivC':gridDivC
+        })
+
 def matJacobiSeidSor(request):
+    #extra arguments
+    n=int(request.POST.get('n'))
+    #create the txt
+    #A
+    matA=open('matrix-A.txt','w')
+    for i in range(1,n+1):
+        ln=""
+        for j in range(1,n+1):
+            a=float(request.POST.get('a'+str(i)+str(j)))
+            ln+=str(a)+','
+        ln+="\n"
+        matA.write(ln)
+    matA.close()
+    #b
+    matB=open('matrix-b.txt','w')
+    for i in range(1,n+1):
+        b=float(request.POST.get('a'+str(i)+str(n+2)))
+        ln=str(b)+"\n"
+        matB.write(ln)
+    matB.close()
+    #x0
+    matX0=open('matrix-x0.txt','w')
+    for i in range(1,n+1):
+        x0=float(request.POST.get('a'+str(i)+str(n+3)))
+        ln=str(x0)+"\n"
+        matX0.write(ln)
+    matX0.close()
     #Arguments we need to do the function
-    tol = 0.005
-    typeTol = 0
+    tol = float(request.POST.get('tol'))
+    typeTol = int(request.POST.get('typeTol'))
     # tipos:
     # - 0 -> dc
     # - 1 -> cs
-    niter = 1000.0 
-    met=2
+    niter = int(request.POST.get('niter'))
+    met=int(request.POST.get('method'))
     # métodos:
     # - 0 -> jacobi
     # - 1 -> gauss-seidel
