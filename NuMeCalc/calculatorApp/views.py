@@ -41,6 +41,9 @@ def biseccion(request):
     
     return render(request, 'calculatorApp/biseccion.html',context={})
 
+def reglaFalsa(request):
+    return render(request,'calculatorApp/reglaFalsa.html',context={})
+
 def secante(request):
     if(request.method == 'POST'):
         #Arguments we need to do the function
