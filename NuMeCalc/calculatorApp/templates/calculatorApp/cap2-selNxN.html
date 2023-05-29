@@ -1,0 +1,30 @@
+{% extends 'calculatorApp/base.html' %}
+
+{% block title %}
+    {{method}}
+{% endblock %}
+
+{% block navbar %}
+    {% include 'calculatorApp/navBar.html' %} 
+{% endblock %}
+
+{% block content %}
+<div style="height: 18em;">
+    <div class="card text-center" style="margin: 7em 15em;">
+        <div class="card-header">
+            Ingrese las dimensiones de la matriz
+        </div>
+        <div class="card-body">
+            <form action="{{method}}" method="post">
+                <input type="number" class="form-control" name="n" id="n" min="2" step="1" placeholder="2" required>
+                <button type="submit" class="btn btn-primary" style="margin: 1em;">Continuar</a>
+            </form>
+        </div>
+        <div class="card-footer text-body-secondary">
+            Recordar que el n, corresponde a las dimensiones de la matriz cuadrada(n x n) correspondiente al sistema de ecuaciones a calcular
+            <br>
+            Las dimensiones serán a partir de 2x2, para n=1 use los métodos del primer capítulo
+        </div>
+    </div>
+</div>
+{% endblock %}
