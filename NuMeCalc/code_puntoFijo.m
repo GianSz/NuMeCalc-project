@@ -1,4 +1,4 @@
-function T = puntoFijo(x0, tol ,typeTol, niter, fun, funG)
+function T = code_puntoFijo(x0, tol ,typeTol, niter, fun, funG)
     f = evalin(symengine,fun);
     g = evalin(symengine, funG);
     

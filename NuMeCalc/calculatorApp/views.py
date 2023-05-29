@@ -3,6 +3,9 @@ from django.contrib import messages
 import matlab.engine #Download this library by doing python -m pip install matlabengine
 import pandas as pd
 
+from NuMeCalc.settings import BASE_DIR
+import os
+
 eng = matlab.engine.start_matlab() #opens matlab
 
 # Create your views here.
@@ -76,6 +79,19 @@ def newtonRaph(request):
     print(df)
     return render(request, 'calculatorApp/secante.html',context={})
 
+def newtonRaph2(request):
+    #Arguments we need to do the function
+    x0 = 0  #Be careful to put all these data in float type!
+    tol = 0.005
+    typeTol = 0
+    # tipos:
+    # - 0 -> dc
+    # - 1 -> cs
+    niter = 100.0
+    fun = '2*(exp(1)^(x^2))-5*x'
+    T = eng.code_newtonRaph2(x0, tol, typeTol, niter, fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+
+    return render(request, 'calculatorApp/newtonRaph2.html', context={})
 # -----------------------------------------Capítulo 2--------------------------------------------------------
 
 def goMatrix(request,method):
@@ -109,3 +125,11 @@ def matJacobiSeidSor(request):
     return render(request, 'calculatorApp/biseccion.html',context={})
 
 # -----------------------------------------Capítulo 3--------------------------------------------------------
+def moveData(image_name, csv_name):
+    ruta_archivo = os.path.join(BASE_DIR, image_name)
+    ruta_destino = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'images', image_name)
+    os.rename(ruta_archivo, ruta_destino)
+
+    ruta_archivo = os.path.join(BASE_DIR, csv_name)
+    ruta_destino = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', csv_name)
+    os.rename(ruta_archivo, ruta_destino)
