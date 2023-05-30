@@ -8,24 +8,11 @@
 
 %function [n,xn,fm,dfm,E] = newton(x0,Tol,TypeTol,niter)
 
-function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun)
+function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun,m)
     %asignamos la f y le decimos que la tenga en términos de x
     syms x
-    maxRaizMult = 200;
 
     f=evalin(symengine,fun);
-    f2 = f;
-    i = 1;
-    while i<maxRaizMult
-        f2 = diff(f2);
-        if(abs(eval(subs(f2,x0)))>Tol )
-            break;
-        end
-
-        i = i+1;
-    end
-
-    m = i
     %f=(21/2)*x * log(x+100)+x*x*log(x+100)+((9*(7*7))/16)*log(x+100);
     %hallamos la derivada de f
     df=diff(f);
@@ -44,7 +31,7 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun)
     xn(c+1)=x0;
     %iteramos hallando las xn de Newton mientras no se llegue a la
     %tolerancia y que ni la función ni su derivada sea 0
-    while error>Tol && fe~=0 && dfe~=0 && c<niter && m < maxRaizMult
+    while error>Tol && fe~=0 && dfe~=0 && c<niter
         %parámetro m para las raíces múltiples
         xn(c+2)=x0-m*fe/dfe;
         fm(c+2)=eval(subs(f,xn(c+2)));
@@ -67,9 +54,6 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun)
         elseif error<Tol
             fprintf('%f es una aproximación de una raiz de f(x) con una tolerancia= %f \n',x0,Tol)
             T = table((0:1:c)', xn', fm',dfm', E', VariableNames=["n","x_n","f_m","df_m","E"])
-        elseif m == maxRaizMult
-            fprintf('Cantidad de derivadas en 0 ha pasado el límite definido: %f\n',maxRaizMult)
-            T = table(maxRaizMult, VariableNames=["MaximaRaiz"])
         elseif dfe==0
             fprintf('%f es una posible raiz múltiple de f(x) \nO simplemente un maximo o minimo local',x0)
             T = table(x0, VariableNames=["Derivada de df(x0) es igual a 0, maximo o minimo local"])
@@ -77,13 +61,14 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun)
             fprintf('Fracasó en %f iteraciones \n',niter) 
             T = table(niter, VariableNames=["Fracaso en iteraciones"])
         end
-
+        fig = figure('Visible', 'off');
         xplot=((x0-2):0.1:(x0+2));
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
+        print(fig,'grafica_newtonRaph1','-dpng')
         hold off
-        writetable(T,'data_RaicesMultiples.csv') 
-
+        close(fig);
+        writetable(T,'data_newtonRaph1.csv') 
         
 end

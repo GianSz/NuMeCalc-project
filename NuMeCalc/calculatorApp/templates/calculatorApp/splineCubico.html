@@ -1,11 +1,12 @@
 {% extends 'calculatorApp/bases/base.html' %}
+{% load static %}
 
 {% block title %}
     Spline Cúbico
 {% endblock %}
 
 {% block content %}
-<h2 style="color:blue; margin:1em;">MÉTODO Spline Cúbico</h2>
+<h2 style="color:blue; margin:1em;">MÉTODO SPLINE CÚBICO</h2>
 <p style="margin-left: 2em;">Este método sirve para hallar la aproximación a un polinomio que pasa a través de los
   puntos dados.</p>
 <p style="margin-left: 2em;">Antes de correr este código recuerde que debe tener en cuenta que debe ingresar un conjunto
@@ -35,10 +36,16 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
           <div class="card" style="margin:2em;">
             <h2 style="margin:0.5em;">Gráfica</h2>
-            <div class="card" style="height: 60%; width: 60%; margin:1em;">
-              <!--<img src="../../../grafica_biseccion.png">-->
+            <div class="w-100" style="height: 2px; background-color: rgba(210, 210, 210);"></div>
+            {% if graph %}
+            <div class="card mx-auto" style="height: 60%; width: 60%; margin:1em;">
+              <div class="card-body">
+                <img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función" src="{% static 'images/grafica_Spline.png' %}">
+              </div>
             </div>
+            {% endif %}
             <h2 style="margin:0.5em;">Polinomio</h2>
+            <div class="w-100" style="height: 2px; background-color: rgba(210, 210, 210);"></div>
             <p style="margin-left: 2em;">Los polinomios se mostrarán de la siguiente manera: a*x <sup> 3 </sup> +
               b*x<sup>2</sup> + c*x + d</p>
             <div class="card" style="margin:1em;">

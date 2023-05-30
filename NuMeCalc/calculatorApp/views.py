@@ -51,12 +51,29 @@ def reglaFalsa(request):
 
         eng.code_ReglaFalsa(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
 
+        csv_file = open('data_reglaFalsa.csv', 'r')
+        data = csv_file.readlines()
         try:
             moveData('grafica_reglaFalsa.png', 'data_reglaFalsa.csv')
         except(FileNotFoundError):
             return render(request, 'calculatorApp/reglaFalsa.html', context={'sol':'El intervalo es inadecuado'})
 
-        columnNames, table, sol = getInfoTable('data_reglaFalsa.csv', tol, niter)
+        columnNames = data[0].split(',')
+        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
+        table = []
+        for i in range(1, len(data)):
+            row = data[i].split(',')
+            row[len(row)-1] = row[len(row)-1].replace('\n','')
+            table.append(row)
+        print(table)
+        if(len(table) == 1 and len(table[0]) == 1):
+            if table[0][0] == "-1":
+                sol = "Intervalo Inválido"
+            else:
+                resp = data[1].replace('\n','')
+                sol = "falla en "+resp+" iteraciones"
+        else:
+            sol = "solución es "+table[len(table)-1][3]
 
         return render(request, 'calculatorApp/reglaFalsa.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
     
@@ -129,12 +146,12 @@ def newtonRaph1(request):
         typeTol = request.POST.get('tipoError')
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
+        raizMultiple = request.POST.get('raiz')
         x0 = x0.strip().replace('−', '-')
-        eng.code_RaicesMultiples(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        eng.code_RaicesMultiples(float(x0),float(tol),float(typeTol),float(niter),fun,float(raizMultiple)) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
         moveData('grafica_newtonRaph1.png', 'data_newtonRaph1.csv')
 
         columnNames, table, sol = getInfoTable('data_newtonRaph1.csv', tol, niter)
-
         return render(request, 'calculatorApp/newtonRaph1.html', context={'graph':True, 'title':columnNames, 'table':table, 'sol':sol})
     
     return render(request,'calculatorApp/newtonRaph1.html',context={})
@@ -383,9 +400,10 @@ def newtonInter(request):
         polFile.close()
 
         eng.code_graficaPol(strPol)
-        moveData('grafica_pol.png', 'data_newtonInter.csv')
         
-        return render(request, 'calculatorApp/newtonInter.html',context={'graph':True, 'pol':ctxtPol})
+        moveData('grafica_Spline.png', 'data_Spline.csv')
+        # print(table)
+        return render(request, 'calculatorApp/splineLineal.html',context={'graph':True,'tablaIter':table,'title':columnNames})
     
     return render(request, 'calculatorApp/newtonInter.html',context={})
 
@@ -423,9 +441,9 @@ def splineLineal(request):
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
 
-        print(table)
-        return render(request, 'calculatorApp/splineLineal.html',context={'tablaIter':table,'title':columnNames})
-        # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
+        moveData('grafica_Spline.png', 'data_Spline.csv')
+        # print(table)
+        return render(request, 'calculatorApp/splineLineal.html',context={'graph':True,'tablaIter':table,'title':columnNames})
     
     return render(request, 'calculatorApp/splineLineal.html',context={})
 
@@ -463,8 +481,8 @@ def splineCubico(request):
             row[len(row)-1] = row[len(row)-1].replace('\n','')
             table.append(row)
 
-        print(table)
-        return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames})
+        moveData('grafica_Spline.png', 'data_Spline.csv')
+        return render(request, 'calculatorApp/splineCubico.html',context={'graph':True,'tablaIter':table,'title':columnNames})
         # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
     
     return render(request, 'calculatorApp/splineCubico.html',context={})

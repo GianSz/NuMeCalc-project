@@ -14,8 +14,16 @@ function T = plotSpline(x, Tabla, d)
         ys = [ys fii];
         
     end
-   
+
+    
+    
+    fig = figure('Visible', 'off');
+    hold on
     plot(xs,ys,'lineWidth',2)
     xlabel("x");
     ylabel("y");
+    print(fig,'grafica_Spline','-dpng')
+    hold off
+    close(fig);
+
 end

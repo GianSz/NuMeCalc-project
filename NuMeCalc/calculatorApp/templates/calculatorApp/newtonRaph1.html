@@ -39,6 +39,10 @@
         <input type="text" class="form-control" id="tolerancia" name="tolerancia" required>
     </div>
     <div class="mb-3">
+        <label for="raiz" class="form-label">Raiz Múltiple</label>
+        <input type="text" class="form-control" id="raiz" name="raiz" required>
+        </div>
+        <div class="mb-3">
         <label for="tipoError" class="form-label">Tipo de error</label>
         <select class="form-select" id="tipoError" name="tipoError" required>
             <option selected></option>
@@ -57,5 +61,6 @@
 {% endblock %}
 
 {% block function_image %}
-<img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función" src="{% static '' %}">
+<img class="w-100 h-100 object-fit-scale" alt="Gráfica de la función"
+    src="{% static 'images/grafica_newtonRaph1.png' %}">
 {% endblock %}
