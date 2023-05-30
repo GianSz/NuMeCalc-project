@@ -17,13 +17,13 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'calculatorApp:biseccion' %}biseccion">Método de bisección</a></li>
-                            <li><a class="dropdown-item" href="regla_falsa.html">Método de regla falsa</a></li>
-                            <li><a class="dropdown-item" href="punto_fijo.html">Método de punto fijo</a></li>
-                            <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonRaph' %}newtonRaph">Método de Newton-Raphson</a></li>
-                            <li><a class="dropdown-item" href="{% url 'calculatorApp:secante' %}secante">Método de secante</a></li>
-                            <li><a class="dropdown-item" href="newton_multiples_1.html">Método de Newton múltiples 1</a></li>
-                            <li><a class="dropdown-item" href="newton_multiples_2.html">Método de Newton múltiples 2</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:biseccion' %}">Método de bisección</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:reglaFalsa' %}">Método de regla falsa</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:puntoFijo' %}">Método de punto fijo</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonRaph' %}">Método de Newton-Raphson</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:secante' %}">Método de secante</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonRaph1' %}">Método de Newton múltiples 1</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonRaph2' %}">Método de Newton múltiples 2</a></li>
                         </ul>
                     </div>
                 </li>
@@ -53,7 +53,7 @@
                         </a>
                       
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="gauss.html">Método de Vandermonte</a></li>
+                            <li><a class="dropdown-item" href="{% url 'calculatorApp:vandermonde' %}">Método de Vandermonde</a></li>
                             <li><a class="dropdown-item" href="{% url 'calculatorApp:newtonInter' %}">Método de Newton</a></li>
                             <li><a class="dropdown-item" href="{% url 'calculatorApp:splineLineal'%}">Spline Lineal</a></li>
                             <li><a class="dropdown-item" href="{% url 'calculatorApp:splineCubico'%}">Spline Cúbico</a></li>
