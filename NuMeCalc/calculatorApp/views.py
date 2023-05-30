@@ -74,7 +74,7 @@ def reglaFalsa(request):
                 resp = data[1].replace('\n','')
                 sol = "falla en "+resp+" iteraciones"
         else:
-            sol = "solución es "+table[len(table)-1][3]
+            sol = "solución es "+table[len(table)-1][1]
 
         return render(request, 'calculatorApp/reglaFalsa.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
     

@@ -54,7 +54,7 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun,m)
   
         if fe==0
            fprintf('%f es raiz de f(x) \n',x0)
-           E(c+2)=0
+           E(c+1)=0
            T = table((0:1:c)', xn', fm',dfm', E', VariableNames=["n","x_n","f_m","df_m","E"])
         elseif error<Tol
             fprintf('%f es una aproximación de una raiz de f(x) con una tolerancia= %f \n',x0,Tol)
