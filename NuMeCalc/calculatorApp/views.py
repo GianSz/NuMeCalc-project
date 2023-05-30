@@ -401,9 +401,9 @@ def newtonInter(request):
 
         eng.code_graficaPol(strPol)
         
-        moveData('grafica_Spline.png', 'data_Spline.csv')
-        # print(table)
-        return render(request, 'calculatorApp/splineLineal.html',context={'graph':True,'tablaIter':table,'title':columnNames})
+        moveData('grafica_pol.png', 'data_newtonInter.csv')
+         
+        return render(request, 'calculatorApp/newtonInter.html',context={'graph':True, 'pol':ctxtPol})
     
     return render(request, 'calculatorApp/newtonInter.html',context={})
 
