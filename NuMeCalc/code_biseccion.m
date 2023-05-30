@@ -96,13 +96,14 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
         end
 
         T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        fig = figure;
+        fig = figure('Visible', 'off');
         xplot=((xm-2):0.1:(xm+2));
         hold on
         yline(0);
         plot(xplot,eval(subs(f,xplot)));
         print(fig,'grafica_biseccion','-dpng')
         hold off
+        close(fig);
         writetable(T,'data_biseccion.csv')
 
     else
