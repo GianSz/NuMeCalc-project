@@ -1,4 +1,4 @@
-function [grafica] = code_graficaNewton(fun)
+function [grafica] = code_graficaPol(fun)
 
     x = readmatrix('pointsX.txt');
     y = readmatrix('pointsY.txt');
@@ -11,11 +11,12 @@ function [grafica] = code_graficaNewton(fun)
     %ypol=pol(1)*xpol.^2+pol(2)*xpol.^1+pol(3);
 
     %ymin=min(ypol);
-    fig=figure;
+    fig=figure('Visible','off');
     plot(x,y,'r*')
     hold on
     grid on
     plot(xpol,ypol,'g')
-    print(fig,'grafica_newtonInter','-dpng')
+    print(fig,'grafica_pol','-dpng')
+    close(fig);
     grafica = "se logra graficar";
 end

@@ -9,6 +9,7 @@ urlpatterns = [
     path('puntoFijo/', views.puntoFijo, name='puntoFijo'),
     path('secante/', views.secante, name='secante'),
     path('newtonRaph/', views.newtonRaph, name='newtonRaph'),
+    path('newtonRaph1/', views.newtonRaph1, name='newtonRaph1'),
     path('newtonRaph2/', views.newtonRaph2, name='newtonRaph2'),
     #capitulo 2
     path('goMatrix/<int:method>/', views.goMatrix, name='goMatrix'),
@@ -20,5 +21,4 @@ urlpatterns = [
     path('splineLineal/',views.splineLineal, name = 'splineLineal'),
     path('splineCubico/',views.splineCubico, name = 'splineCubico'),
     path('api/sendPoints', views.sendPoints, name='sendPoints'),
-    path('newton1/', views.newton1, name='newton1'),
 ]

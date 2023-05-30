@@ -27,11 +27,15 @@ def biseccion(request):
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
         eng.code_biseccion(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        moveData('grafica_biseccion.png', 'data_biseccion.csv')
+        
+        try:
+            moveData('grafica_biseccion.png', 'data_biseccion.csv')
+        except(FileNotFoundError):
+            return render(request, 'calculatorApp/biseccion.html', context={'sol':'El intervalo es inadecuado'})
 
         columnNames, table, sol = getInfoTable('data_biseccion.csv', tol, niter)
 
-        return render(request, 'calculatorApp/biseccion.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+        return render(request, 'calculatorApp/biseccion.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
     
     return render(request, 'calculatorApp/biseccion.html',context={})
 
@@ -44,25 +48,18 @@ def reglaFalsa(request):
         typeTol = request.POST.get('tipoError')
         niter = request.POST.get('niter')
         fun = request.POST.get('funcion') #read the function given
+
         eng.code_ReglaFalsa(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_reglaFalsa.csv', 'r')
-        data = csv_file.readlines()
-        columnNames = data[0].split(',')
-        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
-        table = []
-        for i in range(1, len(data)):
-            row = data[i].split(',')
-            row[len(row)-1] = row[len(row)-1].replace('\n','')
-            table.append(row)
-        if(len(data[len(data)-1]) == 1):
-            if data[1].replace('\n','') == "-1":
-                sol = "Intervalo Inválido"
-            else:
-                resp = data[1].replace('\n','')
-                sol = "falla en "+resp+" iteraciones"
-        else:
-            sol = "solución es "+table[len(table)-1][3]
-        return render(request, 'calculatorApp/reglaFalsa.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
+
+        try:
+            moveData('grafica_reglaFalsa.png', 'data_reglaFalsa.csv')
+        except(FileNotFoundError):
+            return render(request, 'calculatorApp/reglaFalsa.html', context={'sol':'El intervalo es inadecuado'})
+
+        columnNames, table, sol = getInfoTable('data_reglaFalsa.csv', tol, niter)
+
+        return render(request, 'calculatorApp/reglaFalsa.html', context={'graph':True, 'title':columnNames, 'table':table,'sol':sol})
+    
     return render(request,'calculatorApp/reglaFalsa.html',context={})
 
 def puntoFijo(request):
@@ -78,7 +75,7 @@ def puntoFijo(request):
         fun = request.POST['function']
         funG = request.POST['functionG']
 
-        T = eng.code_puntoFijo(x0, tol, typeTol, niter, fun, funG)
+        eng.code_puntoFijo(x0, tol, typeTol, niter, fun, funG)
         moveData('grafica_puntoFijo.png', 'data_puntoFijo.csv')
 
         columnNames, table, sol = getInfoTable('data_puntoFijo.csv', tol, niter)
@@ -124,6 +121,24 @@ def newtonRaph(request):
     
     return render(request, 'calculatorApp/newtonRaph.html', context={})
 
+def newtonRaph1(request):
+    if (request.method == 'POST'):
+        #Arguments we need to do the function
+        x0 = request.POST.get('x0')   #Be careful to put all these data in float type!
+        tol = request.POST.get('tolerancia')
+        typeTol = request.POST.get('tipoError')
+        niter = request.POST.get('niter')
+        fun = request.POST.get('funcion') #read the function given
+        x0 = x0.strip().replace('−', '-')
+        eng.code_RaicesMultiples(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        moveData('grafica_newtonRaph1.png', 'data_newtonRaph1.csv')
+
+        columnNames, table, sol = getInfoTable('data_newtonRaph1.csv', tol, niter)
+
+        return render(request, 'calculatorApp/newtonRaph1.html', context={'graph':True, 'title':columnNames, 'table':table, 'sol':sol})
+    
+    return render(request,'calculatorApp/newtonRaph1.html',context={})
+
 def newtonRaph2(request):
     if(request.method == 'POST'):
         #Arguments we need to do the function
@@ -136,7 +151,7 @@ def newtonRaph2(request):
         niter = int(request.POST['niter'])
         fun = request.POST['function']
 
-        T = eng.code_newtonRaph2(x0, tol, typeTol, niter, fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
+        eng.code_newtonRaph2(x0, tol, typeTol, niter, fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
         moveData('grafica_newtonRaph2.png', 'data_newtonRaph2.csv')
 
         columnNames, table, sol = getInfoTable('data_newtonRaph2.csv', tol, niter)
@@ -261,40 +276,119 @@ def matJacobiSeidSor(request):
         'title':columnNames
     })
 
-@csrf_exempt
-def newton1(request):
-    if (request.method == 'POST'):
-        #Arguments we need to do the function
-        x0 = request.POST.get('x0')   #Be careful to put all these data in float type!
-        tol = request.POST.get('tolerancia')
-        typeTol = request.POST.get('tipoError')
-        niter = request.POST.get('niter')
-        fun = request.POST.get('funcion') #read the function given
-        x0 = x0.strip().replace('−', '-')
-        eng.code_RaicesMultiples(float(x0),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
-        csv_file = open('data_RaicesMultiples.csv', 'r')
-        data = csv_file.readlines()
-        columnNames = data[0].split(',')
-        columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
-        table = []
-        for i in range(1, len(data)):
-            row = data[i].split(',')
-            row[len(row)-1] = row[len(row)-1].replace('\n','')
-            table.append(row)
-        print(table)
-        if (columnNames[0] == 'Derivada de df(x0) es igual a 0, maximo o minimo local'):
-            sol = 'Derivada de df('+table[0][0]+') es igual a 0, x0 es un maximo o minimo local'
-        elif(columnNames[0] == 'MaximaRaiz'):
-            sol = 'Cantidad de derivadas en 0 ha pasado el límite definido: ' + table[0][0]
-        elif(columnNames[0] == 'Fracaso en iteraciones'):
-            sol = 'Fracaso en ' + table[0][0] + ' iteraciones'
-        else:
-            sol = "solución es: " + table[len(table)-1][1]+ " con "+table[len(table)-1][0] + " iteraciones"
-        return render(request, 'calculatorApp/newton1.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
-    
-    return render(request,'calculatorApp/newton1.html',context={})
-
 # -----------------------------------------Capítulo 3--------------------------------------------------------
+@csrf_exempt
+def vandermonde(request):
+    if(request.POST.get('x_list')):
+        #leemos x
+        x=request.POST.get('x_list')
+        x=x.replace(' ','')
+
+        #generamos x
+        xFile=open("pointsX.txt",'w')
+        xFile.write(x)
+        xFile.close()
+
+        #leemos y
+        y=request.POST.get('y_list')
+        y=y.replace(' ','')
+        #generamos y
+        yFile=open("pointsY.txt",'w')
+        yFile.write(y)
+        yFile.close()
+
+        #corremos matlab
+        eng.code_vandermonde()
+
+        #leemos los datos del polinomio
+        csv_file = open('data_vandermonde.csv', 'r')
+        data = csv_file.readlines()
+        data=data[1].split(',')
+        data[len(data)-1]=data[len(data)-1].replace("\n",'')
+
+        #hacemos el str del polinomio
+        strPol=''
+        ctxtPol=[]
+        length=len(data)
+        for i in range(len(data)):
+            #(coef,exp)
+            ctxtPol.append((data[i],str(length-1-i)))
+            if(i==length-1):
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)
+            else:
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)+"+"
+
+        #generamos pol
+        polFile=open("polNI.txt",'w')
+        text=""
+        for t in data:
+            text+=t+','
+        polFile.write(text)
+        polFile.close()
+
+        eng.code_graficaPol(strPol)
+        moveData('grafica_pol.png', 'data_vandermonde.csv')
+
+        return render(request, 'calculatorApp/vandermonde.html',context={'graph':True, 'pol':ctxtPol})
+
+    return render(request, 'calculatorApp/vandermonde.html', context={})
+
+@csrf_exempt
+def newtonInter(request):
+    if(request.method=='POST'):
+        #leemos x
+        x=request.POST.get('x_list')
+        x=x.replace(' ','')
+
+        #generamos x
+        xFile=open("pointsX.txt",'w')
+        xFile.write(x)
+        xFile.close()
+
+        #leemos y
+        y=request.POST.get('y_list')
+        y=y.replace(' ','')
+        #generamos y
+        yFile=open("pointsY.txt",'w')
+        yFile.write(y)
+        yFile.close()
+
+        #corremos matlab
+        eng.code_NewtonFull()
+
+        #leemos los datos del polinomio
+        csv_file = open('data_newtonInter.csv', 'r')
+        data = csv_file.readlines()
+        data=data[1].split(',')
+        data[len(data)-1]=data[len(data)-1].replace("\n",'')
+
+        #hacemos el str del polinomio
+        strPol=''
+        ctxtPol=[]
+        length=len(data)
+        for i in range(len(data)):
+            #(coef,exp)
+            ctxtPol.append((data[i],str(length-1-i)))
+            if(i==length-1):
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)
+            else:
+                strPol+=data[i]+"*xpol.^"+str(length-1-i)+"+"
+        
+        #generamos pol
+        polFile=open("polNI.txt",'w')
+        text=""
+        for t in data:
+            text+=t+','
+        polFile.write(text)
+        polFile.close()
+
+        eng.code_graficaPol(strPol)
+        moveData('grafica_pol.png', 'data_newtonInter.csv')
+        
+        return render(request, 'calculatorApp/newtonInter.html',context={'graph':True, 'pol':ctxtPol})
+    
+    return render(request, 'calculatorApp/newtonInter.html',context={})
+
 @csrf_exempt
 def splineLineal(request):
     if(request.method=='POST'):
@@ -333,50 +427,9 @@ def splineLineal(request):
         return render(request, 'calculatorApp/splineLineal.html',context={'tablaIter':table,'title':columnNames})
         # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
     
-    else:
-        return render(request, 'calculatorApp/splineLineal.html',context={})
+    return render(request, 'calculatorApp/splineLineal.html',context={})
 
 @csrf_exempt
-def vandermonde(request):
-    x_list = request.POST[x_list].split(sep=',')
-    y_list = request.POST[y_list].split(sep=',')
-
-    file_pathA = os.path.join(BASE_DIR, 'matrix-A_vandermonde.txt')
-    if(os.path.isfile(file_pathA)):
-        os.remove(file_pathA)
-
-    file_pathb = os.path.join(BASE_DIR, 'matrix-b_vandermonde.txt')
-    if(os.path.isfile(file_pathb)):
-        os.remove(file_pathb)
-
-    archivo1 = open('matrix-A_vandermonde.txt', 'w')
-    archivo2 = open('matrix-b_vandermonde.txt', 'w')
-
-    for i,x in enumerate(x_list):
-        x = int(x)
-        count = len(x_list)-1
-        while(count>=0):
-            if count==0:
-                archivo1.write(f'1')
-                break
-            archivo1.write(f'{x**count},')
-            count-=1
-        if(i==len(x_list)-1):
-            break
-        archivo1.write('\n')
-    
-    for i,y in enumerate(y_list):
-        if(i==len(y_list)-1):
-            archivo2.write(y)
-            break
-        archivo2.write(f'{y}\n')
-
-    eng.code_vandermonde()
-    return render(request, 'calculatorApp/vandermonde.html', context={})
-
-def splineLineal(request):
-    return render(request,'calculatorApp/splineLineal.html',context={})
-
 def splineCubico(request):
     if(request.method=='POST'):
         #leemos x
@@ -414,8 +467,7 @@ def splineCubico(request):
         return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames})
         # return render(request, 'calculatorApp/splineCubico.html',context={'pol':ctxtPol})
     
-    else:
-        return render(request, 'calculatorApp/splineCubico.html',context={})
+    return render(request, 'calculatorApp/splineCubico.html',context={})
 
 
 @csrf_exempt
@@ -448,60 +500,7 @@ def sendPoints(request):
         sol = 1
         # return render(request, 'calculatorApp/splineCubico.html',context={'tablaIter':table,'title':columnNames,'sol':sol})
         # return  JsonResponse(response_data,safe = False)
-    else:
-        return JsonResponse({'error': 'Invalid request method'})
-
-def newtonInter(request):
-    if(request.method=='POST'):
-        #leemos x
-        x=request.POST.get('x')
-        x=x.replace(' ','')
-        #generamos x
-        xFile=open("pointsX.txt",'w')
-        xFile.write(x)
-        xFile.close()
-        #leemos y
-        y=request.POST.get('y')
-        y=y.replace(' ','')
-        #generamos y
-        yFile=open("pointsY.txt",'w')
-        yFile.write(y)
-        yFile.close()
-
-        #corremos matlab
-        eng.code_NewtonFull()
-        #leemos los datos del polinomio
-        csv_file = open('data_newtonInter.csv', 'r')
-        data = csv_file.readlines()
-        print(data)
-        data=data[1].split(',')
-        data[len(data)-1]=data[len(data)-1].replace("\n",'')
-        #hacemos el str del polinomio
-        strPol=''
-        ctxtPol=[]
-        length=len(data)
-        for i in range(len(data)):
-            #(coef,exp)
-            ctxtPol.append((data[i],str(length-1-i)))
-            if(i==length-1):
-                strPol+=data[i]+"*xpol.^"+str(length-1-i)
-            else:
-                strPol+=data[i]+"*xpol.^"+str(length-1-i)+"+"
-
-        #generamos pol
-        polFile=open("polNI.txt",'w')
-        text=""
-        for t in data:
-            text+=t+','
-        polFile.write(text)
-        polFile.close()
-
-        eng.code_graficaNewton(strPol)
-        print(ctxtPol)
-        return render(request, 'calculatorApp/newtonInter.html',context={'pol':ctxtPol})
-    
-    else:
-        return render(request, 'calculatorApp/newtonInter.html',context={})
+    return JsonResponse({'error': 'Invalid request method'})
     
 def moveData(image_name, csv_name):
     file_path = os.path.join(BASE_DIR, image_name)
@@ -525,13 +524,12 @@ def getInfoTable(file_name, tol, niter):
         row[len(row)-1] = row[len(row)-1].replace('\n','')
         table.append(row)
 
-    try:
-        row = table[len(table)-1]
-        if(float(row[len(row)-1]) <= float(tol)):
-            sol = row[1]
-            sol = f"La solución obtenida es: {sol}"
-        else:
-            sol=f"No se llegó a la respuesta esperada con {niter} iteraciones"
-    except(ValueError):
-        sol = "Recuerda que la solución debe estar dentro del intervalo ingresado"
+    
+    row = table[len(table)-1]
+    if(float(row[len(row)-1]) <= float(tol)):
+        sol = row[1]
+        sol = f"La solución obtenida es: {sol}"
+    else:
+        sol=f"No se llegó a la respuesta esperada con {niter} iteraciones"
+
     return columnNames, table, sol

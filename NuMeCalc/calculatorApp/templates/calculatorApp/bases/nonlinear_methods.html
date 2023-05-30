@@ -38,10 +38,10 @@
                 <div class="w-100" style="height: 2px; background-color: rgba(210, 210, 210);"></div>
                 {% if graph %}
                 <div class="card mx-auto" style="height: 60%; width: 60%; margin:1em;">
-                    
-                    {% block function_image %}
-                    {% endblock %}
-                    
+                    <div class="card-body">
+                        {% block function_image %}
+                        {% endblock %}
+                    </div>
                 </div>
                 {% endif %}
 
@@ -49,24 +49,26 @@
                 <div class="w-100" style="height: 2px; background-color: rgba(210, 210, 210);"></div>
                 {% if table %}
                 <div class="card" style="margin:1em;">
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                {% for i in title %}
-                                    <th scope="col">{{i}}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for info in table %}
+                    <div class="card-body">
+                        <table class="table table-bordered text-center m-0">
+                            <thead>
                                 <tr>
-                                    {% for d in info %}
-                                    <td>{{d}}</td>
+                                    {% for i in title %}
+                                        <th scope="col">{{i}}</th>
                                     {% endfor %}
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for info in table %}
+                                    <tr>
+                                        {% for d in info %}
+                                        <td>{{d}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 {% endif %}
 
@@ -74,8 +76,9 @@
                 <div class="w-100" style="height: 2px; background-color: rgba(210, 210, 210);"></div>
                 {% if sol %}
                 <div class="card" style="margin:1em;">
-                    
-                        <p style="margin-left:1em;">{{sol}}</p>
+                    <div class="card-body">
+                        <p class="card-text">{{sol}}</p>
+                    </div>
                 </div>
                 {% endif %}
             </div>

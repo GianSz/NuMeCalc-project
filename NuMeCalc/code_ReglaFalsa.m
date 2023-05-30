@@ -82,10 +82,12 @@ function T = code_ReglaFalsa(xip,xsp,Tol,TypeTol,niter,fun)
         T = table(-1, VariableNames=["intervalo"]);
     end
     writetable(T,'data_reglaFalsa.csv')
+    fig = figure('Visible', 'off');
     xplot=((xm(c+1)-2):0.1:(xm(c+1)+2));
     hold on
     yline(0);
     plot(xplot,eval(subs(f,xplot)));
+    print(fig,'grafica_reglaFalsa','-dpng')
     hold off
-    
+    close(fig);
 end
