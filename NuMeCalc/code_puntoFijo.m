@@ -4,8 +4,11 @@ function T = code_puntoFijo(x0, tol ,typeTol, niter, fun, funG)
     
     fm = eval(subs(f, x0));
     if fm == 0
-        s = x0;
-        E = 0;
+        E(1) = 0;
+        N(1) = 1;
+        n(1) = x0;
+        fm(1) = fm;
+        xm = x0;
         fprintf('%f es una raíz de la función', x0);
     else
         i = 1;
@@ -33,6 +36,7 @@ function T = code_puntoFijo(x0, tol ,typeTol, niter, fun, funG)
 
         if fm(i) == 0
             fprintf('%f es una raíz de la función\n', xm);
+            E(i)=0
         elseif E(i)<tol
             fprintf('%f es una aproximación de una raíz de la función con una toleracia = %f\n', xm, E(i));
         else

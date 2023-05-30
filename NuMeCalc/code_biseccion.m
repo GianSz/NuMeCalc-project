@@ -13,27 +13,21 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
     
     %Revisamos si el inicio del intervalo ya es una raíz
     if fi==0
-        E=0;
         fprintf('%f es raiz de f(x) \n',xi)
         N(1)= 1
         XM(1)=xi
         fm(1)=fi
         E(1)=0
-        T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        writetable(T,'data_biseccion.csv')
-        
+        xm = xi
     
     %Revisamos si el final del intervalo ya es una raíz
     elseif fs==0
-        E=0;
         fprintf('%f es raiz de f(x) \n',xs)
         N(1)= 1
         XM(1)=xs
         fm(1)=fs
         E(1)=0
-        T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        writetable(T,'data_biseccion.csv')
-        
+        xm = xs
     
     %Revisamos que el intervalo si cumpla la condición
     elseif fs*fi<0
@@ -86,6 +80,7 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
 
         if fe==0
            fprintf('%f es raiz de f(x) \n',xm)
+           E(c+2)=0
 
         elseif error<Tol
            fprintf('%f es una aproximación de una raiz de f(x) con una tolerancia= %f \n',xm,Tol)
@@ -95,8 +90,17 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
 
         end
 
+    else
+       fprintf('El intervalo es inadecuado') 
+       N= ['-' '-']
+       XM=['-' '-']
+       fm=['-' '-']
+       E=['-' '-']
+       xm = 0
+
+    end 
         T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        fig = figure('Visible', 'off');
+        fig = figure();
         xplot=((xm-2):0.1:(xm+2));
         hold on
         yline(0);
@@ -105,16 +109,4 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
         hold off
         close(fig);
         writetable(T,'data_biseccion.csv')
-
-    else
-       fprintf('El intervalo es inadecuado') 
-       N= ['-' '-']
-       XM=['-' '-']
-       fm=['-' '-']
-       E=['-' '-']
-       T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-       writetable(T,'data_biseccion.csv')
-
-    end    
-    
 end

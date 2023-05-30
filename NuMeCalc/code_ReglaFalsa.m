@@ -65,6 +65,7 @@ function T = code_ReglaFalsa(xip,xsp,Tol,TypeTol,niter,fun)
         end
         if fe==0 
            fprintf('%f es raiz exacta de f(x), lograda en en %d iteraciones',xm(c+1),c)
+           E(c+2)=0
             T = table((0:1:c)', xm', xi', xs', fm', fi' , fs', E', VariableNames=["n","x_m","x_i","x_s","f_m","f_i","f_s","E"]);
         elseif error<Tol
            fprintf('\n%f es una aproximación de una raiz de f(x) con una tolerancia= %f en %d iteraciones',xm(c+1),Tol,c)

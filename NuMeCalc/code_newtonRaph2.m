@@ -54,6 +54,7 @@ function T = code_newtonRaph2(x0, tol , typeTol, niter, fun)
 
     if FM(i) == 0
         fprintf('%f es una raíz de la función\n', xm);
+        E(i) = 0
     elseif E(i)<tol
         fprintf('%f es una aproximación de una raíz de la función con una toleracia = %f\n', xm, E(i));
     elseif den==0

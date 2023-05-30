@@ -63,6 +63,7 @@ function T = code_secante(x0,x1,Tol,TypeTol,niter,fun)
 
         if fe==0
            fprintf('%f es raiz de f(x) \n',xn)
+           E(c+3)=0
 
         elseif error<Tol
            fprintf('%f es una aproximación de una raiz de f(x) con una tolerancia= %f \n',xn,Tol)

@@ -51,13 +51,14 @@ def reglaFalsa(request):
 
         eng.code_ReglaFalsa(float(xi),float(xs),float(tol),float(typeTol),float(niter),fun) #call the function in matlab, be careful because the matlab file has to be in the same address of this code
 
-        csv_file = open('data_reglaFalsa.csv', 'r')
-        data = csv_file.readlines()
+        
         try:
             moveData('grafica_reglaFalsa.png', 'data_reglaFalsa.csv')
         except(FileNotFoundError):
             return render(request, 'calculatorApp/reglaFalsa.html', context={'sol':'El intervalo es inadecuado'})
 
+        csv_file = open(os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', 'data_reglaFalsa.csv'), 'r')
+        data = csv_file.readlines()
         columnNames = data[0].split(',')
         columnNames[len(columnNames)-1] = columnNames[len(columnNames)-1].replace('\n','')
         table = []
@@ -521,12 +522,18 @@ def sendPoints(request):
     return JsonResponse({'error': 'Invalid request method'})
     
 def moveData(image_name, csv_name):
+    
     file_path = os.path.join(BASE_DIR, image_name)
     destination_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'images', image_name)
+    if(os.path.isfile(destination_path)):
+        os.remove(destination_path)
     os.rename(file_path, destination_path)
-
+    
+    
     file_path = os.path.join(BASE_DIR, csv_name)
     destination_path = os.path.join(BASE_DIR, 'calculatorApp', 'static', 'csv', csv_name)
+    if(os.path.isfile(destination_path)):
+        os.remove(destination_path)
     os.rename(file_path, destination_path)
 
 def getInfoTable(file_name, tol, niter):
@@ -544,7 +551,9 @@ def getInfoTable(file_name, tol, niter):
 
     
     row = table[len(table)-1]
-    if(float(row[len(row)-1]) <= float(tol)):
+    if(row[len(row)-1] == '-'):
+        sol = "El intervalo es inadecuado"
+    elif(float(row[len(row)-1]) <= float(tol)):
         sol = row[1]
         sol = f"La solución obtenida es: {sol}"
     else:
