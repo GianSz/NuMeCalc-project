@@ -100,7 +100,7 @@ function T = code_biseccion(xi,xs,Tol,TypeTol,niter,fun)
 
     end 
         T = table(N', XM', fm', E', VariableNames=["n","Xn","Fm","Error"]);
-        fig = figure();
+        fig = figure('Visible', 'off');
         xplot=((xm-2):0.1:(xm+2));
         hold on
         yline(0);

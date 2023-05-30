@@ -16,6 +16,11 @@ function T = code_newtonRaph(x0,Tol,TypeTol,niter,fun)
         %agregamos al arreglo de funciones la f(x0) 
         fm(c+1) = eval(subs(f,x0));
         fe=fm(c+1);
+        if fe == 0
+            E(1)=0
+            xn(1)=x0
+            fm(1)=fe
+         else
         %agregamos al arreglo de derivadas la f'(x0)
         dfm(c+1) = eval(subs(df,x0));
         dfe=dfm(c+1);
@@ -41,7 +46,6 @@ function T = code_newtonRaph(x0,Tol,TypeTol,niter,fun)
             x0=xn(c+2);
             c=c+1;
         end
-
         if fe==0
            fprintf('%f es raiz de f(x) \n',x0)
            E(c+2) = 0
@@ -54,7 +58,7 @@ function T = code_newtonRaph(x0,Tol,TypeTol,niter,fun)
         else 
            fprintf('Fracasó en %f iteraciones \n',niter) 
         end
-
+      end
         T = table((0:1:c)', xn', fm', E', VariableNames=["n","x_n","f_m","E"]);
         fig = figure('Visible', 'off');
         xplot=((x0-2):0.1:(x0+2));

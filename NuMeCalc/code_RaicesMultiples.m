@@ -29,6 +29,10 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun,m)
     error=E(c+1);
     %agregamos la primera x -> x0
     xn(c+1)=x0;
+    if fe == 0
+        E(1)=0
+        T = table((0:1:c)', xn', fm',dfm', E', VariableNames=["n","x_n","f_m","df_m","E"])
+    else
     %iteramos hallando las xn de Newton mientras no se llegue a la
     %tolerancia y que ni la función ni su derivada sea 0
     while error>Tol && fe~=0 && dfe~=0 && c<niter
@@ -62,6 +66,7 @@ function T = code_RaicesMultiples(x0,Tol,TypeTol,niter,fun,m)
             fprintf('Fracasó en %f iteraciones \n',niter) 
             T = table(niter, VariableNames=["Fracaso en iteraciones"])
         end
+    end
         fig = figure('Visible', 'off');
         xplot=((x0-2):0.1:(x0+2));
         hold on
